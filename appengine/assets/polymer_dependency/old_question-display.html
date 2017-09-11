@@ -1,0 +1,548 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @charanbachu
+ Sign out
+ Unwatch 7
+  Star 0
+  Fork 0 arpitbits/scholargraph Private
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs
+Tree: bc2ce50757 Find file Copy pathscholargraph/appengine/assets/polymer_dependency/question-display.html
+bc2ce50  on 3 Aug 2016
+@charanbachu charanbachu Modified new file
+1 contributor
+RawBlameHistory    
+549 lines (505 sloc)  15.8 KB
+<!--Importing polymer elements-->
+
+<dom-module id="question-display">
+	<style is="custom-style">
+		:host{
+			font-family: 'Roboto', 'Noto', sans-serif;
+		};
+		@media only screen and (max-width : 600px){
+			paper-card{
+				width: 70%;
+			}
+		}
+		paper-card{
+			width: 100%;
+			position: relative;
+			opacity: 0;
+		}
+		
+		.card-content{
+			background-color: #009688;
+			margin: 0;
+			padding: 15%;
+			padding-bottom: 5%;
+			padding-top: 7%;
+			color: white;
+			text-align: center;
+		}
+		#subheading{
+			margin-top: 10%;
+			font-size: 18px;
+			font-weight: 600;
+		}
+		#parentNode{
+			margin-top: 20px;
+		}
+		.card-actions{
+			height: auto;
+			cursor: pointer;
+			margin: 0%;
+			padding: 0%;
+		}
+		#yesNo, #radio, #paperInput{
+			width: 100%;
+			@apply(--layout-horizontal);
+			display: none;
+		}
+		#radio1
+	    {
+	      @apply(--layout-horizontal);
+	      display: none;
+	    }
+	    #card_psycho, #card_structural{
+	    	display: none;	
+	    }
+		.actions{
+			position: relative;
+			display: inline-block;
+			width: 22%;
+			text-align: center;
+			line-height: 2;
+			padding: 5%;
+			padding-top: 14px;
+			padding-bottom: 14px;
+		}
+		 .answer-radio {
+	      float: left;
+	       position: relative;
+	       z-index: 2;
+	    }
+		.radioActions{
+	      margin: 5%;
+	      margin-left: 15%;
+	      margin-right: 15%;
+	      width: 60%;
+	      color: black;
+	      background: #009688;
+	      padding: 2%;
+	      border-radius: 10px;
+	      position: relative;
+	      height: 15px;
+	    }
+		.radioAction{
+	      margin: 5%;
+	      margin-left: 15%;
+	      margin-right: 15%;
+	      -webkit-transition: background 2s; /* For Safari 3.1 to 6.0 */
+	        transition: background 2s;
+	      width: 60%;
+	      color: #333;
+	      background: #009688;
+	      padding: 2%;
+	      border-radius: 10px;
+	      position: relative;
+	      height: 15px;   
+	       }
+	    .percentage {
+	        color: #999;
+	        font-weight: bold;
+	        position: relative;
+	        float: right;
+	        z-index: 2;
+	    }
+		iron-icon{
+			--iron-icon-fill-color: #253a52;
+		}
+		#schoolIcon{
+			--iron-icon-fill-color: white;
+		}
+		paper-fab{
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			--paper-fab-background: #009688;
+		}
+		#checkboxDiv{
+			box-sizing: border-box;
+			display: none;
+		}
+		#checkboxContainer{
+			padding: 30px;
+			padding-bottom: 0px;
+		}
+		paper-checkbox{
+			/*--paper-checkbox-unchecked-color: ;*/
+			--paper-checkbox-unchecked-ink-color: #009688;
+			--paper-checkbox-checked-color: #009688;
+			--paper-checkbox-checked-ink-color: #009688;
+			margin: 5px;
+		}
+		#nextCheckButton{
+			float: right;
+			color: white;
+			background-color: #009688;
+			margin: 20px;
+			/*margin-top: -20px;*/
+		}
+		#nextCheckButton iron-icon{
+			--iron-icon-fill-color: white;
+		}
+		#closeFab{
+			display: none;
+			z-index: 100;
+		}
+		#skim{
+			height: 100vh;
+			width: 0;
+			position: fixed;
+			z-index: 99;
+			left: 0;
+			top: 0;
+			background-color: grey; /* fallback color */
+		    background-color: rgba(0,0,0, 0.7); /* Black w/opacity */
+		    overflow-x: hidden;
+		}
+	</style>
+	<template id="dom-bind">
+		<paper-card id="dialog">
+			<div class="card-content">
+				<iron-icon id="schoolIcon" icon="social:school"></iron-icon><br>
+				<div id="head" >{{response.heading}}</div>
+				<div id="parentNode" style="font-size:15px">{{parentNodes}}</div>
+				<div id="subheading" style="font-size:15px">{{response.question}}</div>
+			</div>
+			
+			
+			<div class="card-actions" id = "card_psycho">
+				<form id="inputForm" is="iron-form">
+					<div id="paperInput" style="width: 70%; margin: 0 auto; ">
+						<paper-input id="paperinput"><iron-icon suffix icon="send" on-click="fetchNext"></iron-icon></paper-input>
+					</div>
+				</form>
+
+				<div id="checkboxDiv">
+					<form is="iron-form" id="checkboxForm">
+					<div id="checkboxContainer">
+						<template is="dom-repeat" items="{{response.options}}">
+							<paper-checkbox style="font-size:15px">{{item.value}}</paper-checkbox><br>
+						</template>
+					</div>
+					<paper-button id="nextCheckButton" on-click="fetchNext" style="font-size:15px">Next <iron-icon icon="arrow-forward"></iron-icon></paper-button>
+					</form>
+				</div>
+
+				<div id="yesNO">
+					<div class="actions" on-click="fetchNext" data-args="0">
+						<paper-ripple></paper-ripple>
+						<iron-icon icon="check-circle" id="checkIcon" data-args="0"></iron-icon><br>
+						YES
+					</div>
+					<div class="actions" on-click="fetchNext" data-args="1">
+						<paper-ripple></paper-ripple>
+						<iron-icon icon="highlight-off" data-args="1"></iron-icon><br>
+						NO
+					</div>
+					<div class="actions" on-click="fetchNext" data-args="2">
+						<paper-ripple></paper-ripple>
+						<iron-icon icon="help-outline" data-args="2"></iron-icon><br>
+						NOT SURE
+					</div>
+				</div>
+
+				
+		        <div id="ans_radio">
+		          <template is="dom-repeat" items="{{response.options}}" >
+		            <div class = "radioAction" style="background: linear-gradient(to right,  {{item.color}} 0%,{{item.color}} {{item.percentage}}%,#f6f6f6 {{item.percentage}}%,#f6f6f6 100%);font-size:15px;">
+		            <div class="answer-radio" on-click="fetchNext" data-args$="{{index}}" >
+		            <paper-ripple></paper-ripple>
+		            {{item.value}}</div>
+		            <div class="percentage" style="color:black">{{item.percentage}}%</div>
+		            </div> 
+		          </template>
+		          <paper-button id="nextCheckButton" on-click="fetchNext" >Next <iron-icon icon="arrow-forward"></iron-icon></paper-button>
+		        </div>
+		        <div id="radio" >
+		          <template is="dom-repeat" items="{{response.options}}" >
+		            <div class="radioActions" on-click="fetchNext" data-args$="{{index}}" style = "color:white">
+		            <paper-ripple></paper-ripple>
+		            {{item.value}}</div>
+		          </template>
+		        </div>
+      		</div>
+		</paper-card>
+		<!-- Iron ajax will do all the ajax work 
+			url will be provided in the element's url attribute.
+			params are the parameters we want to pass through ajax.
+		-->
+		<iron-ajax
+			id="myIronAjax"
+			url="{{url}}"
+			params="{{ajaxParams}}"
+			handle-as="json"
+			on-response="handleResponse"
+			last-response="{{response}}"
+		></iron-ajax>
+	</template>
+
+	<script>
+		Polymer({
+			is: "question-display",
+			properties: {
+				heading: {
+					type: String
+				},
+				url: {
+					type: String
+				},
+				exit: {
+					type: String
+				},
+				parentNodes: {
+					type: String
+				},
+				cardOpened: {
+					type: Boolean,
+					value : false
+				},
+				ajaxParams: {
+					type: Object,
+					value: function(){ return { "firstQuestion" : "true" } }, //Only for the first time it is true
+					notify: true
+				}
+			},
+			attached: function(){
+				//when this element gets attached to the document, make first ajax request.
+				console.log("attached");
+				this.ajaxRequest();
+			},
+			fetchNext: function(e){
+				var ajax = document.getElementById("myIronAjax");
+		        if( ajax.lastResponse.ques_count < 6)
+		        {
+		          var class_val = e.target.getAttribute('class');
+			        console.log(class_val.indexOf("radioActions"));
+			        if(class_val.indexOf("radioActions") == 0)
+			        {
+			          var radio = document.getElementById('radio');
+			          var value = e.target.getAttribute('data-args');
+			          this.set('response.options.'+value+'.color','#A0E4BC');
+			           var ajax = document.getElementById("myIronAjax");
+			          var answer = ajax.lastResponse.options.length;
+			          var i=0;
+			          var total = 0;
+			          var opt_value = [];
+			          for(i=0;i< answer;i++)
+			          {
+			            total = total + parseInt(ajax.lastResponse.options[i]['percentage']);
+			            if(value == i)
+			            {
+			              total = total + 1;
+			              opt_value[i] = parseInt(ajax.lastResponse.options[i]['percentage']) + 1;
+			            }
+			            else
+			            {
+			              opt_value[i] = parseInt(ajax.lastResponse.options[i]['percentage']);
+			            }
+			          }
+			          for(i=0;i< answer;i++)
+			          {
+			            console.log(opt_value[i]);
+			            percentage =  (opt_value[i]*100) / total;
+			            console.log(percentage);
+			            percentage = percentage.toFixed(2);
+			            this.set('response.options.'+i+'.percentage',percentage);
+			          }          
+			          console.log(answer);
+			          var ans_radio =  document.getElementById('ans_radio');
+			          radio.style.display = 'none';
+			          ans_radio.style.display = 'block';
+			           setTimeout(function(){
+			          card = document.getElementById('dialog');
+			          card.style.opacity = "0";
+			            },650);
+			          setTimeout(function(){
+			          	ans_radio.style.display = 'none';
+			          document.getElementById("myIronAjax").generateRequest();
+			          console.log('enter');
+			          
+			           card.style.opacity = "0";
+			          },1150);
+			                this.ajaxParams = {
+			                  "ans": document.querySelector('paper-input').value,
+			                  "type": e.target.getAttribute('data-args'),
+			                  "firstQuestion": "false"
+			              };
+			          
+			        }
+			        if(e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton")
+			        {
+			            setTimeout(function(){
+			            card = document.getElementById('dialog');
+			            card.style.opacity = "1";
+			            
+			            this.cardOpened = false;
+			              },650);
+			            setTimeout(function(){
+			            document.getElementById("myIronAjax").generateRequest();
+			            console.log('enter');
+			            },1150);
+			                  this.ajaxParams = {
+			                    "ans": document.querySelector('paper-input').value,
+			                    "type": e.target.getAttribute('data-args'),
+			                    "firstQuestion": "false"
+			                };
+			        }
+		        } 
+		        
+		        else if( ajax.lastResponse.ques_count > 5)
+		        {
+		        	this.close(e);
+					console.log("fetchNext");
+					if(e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton"){
+						var checkboxes = document.getElementById("checkboxContainer").querySelectorAll("paper-checkbox");
+						var checks = [];
+						for(i = 0;i < checkboxes.length;i++){
+							checks[i] = checkboxes[i].checked ? 1 : 0;
+						}
+						
+						this.ajaxParams = {
+							"checkboxes" : '"' + checks + '"',
+							"firstQuestion": "false"
+						};
+						var form = document.getElementById("checkboxForm");
+					    form.reset();
+					}
+					else{
+						console.log(document.querySelector('#paperinput').value);
+						this.ajaxParams = {
+							"ans": document.querySelector('#paperinput').value,
+							"type": e.target.getAttribute('data-args'),
+							"firstQuestion": "false"
+						};
+					}
+					console.log(this.ajaxParams.checkboxes);
+					setTimeout(function(){
+						document.getElementById("myIronAjax").generateRequest();
+						var input = document.getElementById("inputForm");
+						input.reset();
+					},350);
+		        }
+		      
+				
+			},
+			ajaxRequest: function(){
+				document.getElementById("myIronAjax").generateRequest();
+			},
+			handleResponse: function(){
+        		var card_psycho = document.getElementById('card_psycho');
+				var ajax = document.getElementById("myIronAjax");
+				if(ajax.lastResponse.ques_count >= 6)
+        		{
+        			
+					var main = document.getElementById('dialog');
+					var yesNO = document.getElementById('yesNO');
+					var radio = document.getElementById('radio');
+					var closefab = document.getElementById('closeFab');
+					var paperInput = document.getElementById('paperInput');
+					var checkboxDiv = document.getElementById('checkboxDiv');
+			        var ans_radio = document.getElementById('ans_radio');
+					 var flag = 0;
+					 card_psycho.style.display = 'block';
+					 ans_radio.style.display = 'none';
+					if(ajax.lastResponse.options[0]['value'] == "redirect" || ajax.lastResponse.options[0]['value'] == "completed"){
+						main.style.display='none';
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+					}
+					else if(ajax.lastResponse.opt_num == "0"){
+						
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						paperInput.style.display = 'block';
+						checkboxDiv.style.display = 'none';
+					}
+					else if(ajax.lastResponse.options[0]['value'] == "insert"){
+						flag = 1;
+						ajax.lastResponse.options.splice(0,1);
+						yesNO.style.display = 'none';
+						radio.style.display = 'block';
+						paperInput.style.display = 'block';
+						checkboxDiv.style.display = 'none';
+					}
+					else if(ajax.lastResponse.options[0]['value'] == "checkbox"){
+						flag = 2;
+						ajax.lastResponse.options.splice(0,1);
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'block';
+					}
+					else if(ajax.lastResponse.opt_num == "3" && ajax.lastResponse.options[0]['value'] == "Yes"){
+						yesNO.style.display = 'block';
+						radio.style.display = 'none';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+					}
+					else{
+						yesNO.style.display = 'none';
+						radio.style.display = 'block';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+					}
+	        		
+					var parentArray = ajax.lastResponse.parent;
+					var parentNodes = parentArray[Object.keys(parentArray).length-2];
+					for(var i = Object.keys(parentArray).length-4;i >= 0;i-=2){
+						parentNodes += " -> " + parentArray[i];
+					}
+					this.parentNodes = parentNodes;
+					// console.log(parentNodes);
+					console.log("handleResponse " + this.ajaxParams.firstQuestion);
+					 if(ajax.lastResponse.ques_count != -1)
+			        {
+			        	this.open()
+			        }
+			        else
+			        {
+			          	console.log("Opening from handleResponse"); 
+			        	this.close();
+			        }
+					
+					
+				}
+				else
+				{
+			        var main = document.getElementById('dialog');
+			        var radio = document.getElementById('radio');
+			        var yesNO = document.getElementById('yesNO');
+			        var ans_radio = document.getElementById('ans_radio');
+					var checkboxDiv = document.getElementById('checkboxDiv');	
+			         card_psycho.style.display = 'block';
+			        if(ajax.lastResponse.options[0]['value'] == "redirect"){
+			        	main.style.display='none';
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						ans_radio.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+						card_psycho.style.display = 'none';
+			        }
+			        else
+			        {
+			          ans_radio.style.display = 'none';
+			          radio.style.display = 'block';
+			          yesNO.style.display = 'none';
+					 checkboxDiv.style.display = 'none';
+			        }
+			        
+			        console.log("handleResponse " + this.ajaxParams.firstQuestion);
+			        if(ajax.lastResponse.ques_count != -1)
+			        {
+			        	this.open()
+			        }
+			        else
+			        {
+			          	console.log("Opening from handleResponse"); 
+			        	this.close();
+			        }
+			        
+				}
+			},
+			toggle: function(){
+				console.log("toggle "+this.cardOpened);
+				var ajax = document.getElementById("myIronAjax");
+				if(this.cardOpened === true){
+					this.close(e);
+				}
+				else{
+					document.getElementById("skim").style.width = "100vw";
+					this.open();
+				}
+			},
+			open: function(){
+				console.log("open");
+				card = document.getElementById('dialog');
+				card.style.opacity = "1";
+				this.cardOpened = true;
+			},
+			close: function(e){
+				console.log("close");
+				card = document.getElementById('dialog');
+				card.style.opacity = "0";
+				this.cardOpened = false;
+				console.log(this.cardOpened);
+			}
+		});
+	</script>
+</dom-module>
+Contact GitHub API Training Shop Blog About
+© 2017 GitHub, Inc. Terms Privacy Security Status Help

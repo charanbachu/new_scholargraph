@@ -1,0 +1,1 @@
+<paper-fab icon="question-answer" id="questionFab" onclick="takeSurvey()" style="z-index: 999;"></paper-fab>

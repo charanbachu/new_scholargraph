@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>College Comparison Pa</title>
+		<meta content="text/html" charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- For polyfill support across non-compatible browsers-->
+		<script src="<?php echo base_url().'assets/polymer_dependency/webcomponents-lite.min.js'?>"></script>
+
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
+
+		<!--importing vulcanized polymer dependencies-->
+		<link rel="import" href="<?php echo base_url().'assets/polymer_dependency/polymer-imports-vulc.html'?>">
+
+		<!-- common css for header, footer, sidebar, etc. -->
+		<link rel="import" href="<?php echo base_url().'assets/polymer_dependency/shared-css.html'?>">
+
+		<script type="text/javascript" src="/assets/js/jquery.min.js"></script>
+
+		<script type="text/javascript" src="/assets/js/encode_req.js"></script>
+
+		<style is="custom-style" include="shared-css iron-flex iron-flex-alignment">
+
+    .iron-selected {
+      background: #ccc;
+    }
+
+    .my-selected {
+      background: red;
+    }
+     .heading1 {
+        padding: 20px 15px;
+        margin-top: 20px;
+        /*background-color: #f0f0f0;*/
+        background-color: #525460;
+        /*border: 1px solid #dedede;*/
+        /*border-top-left-radius: 5px;*/
+        /*border-top-right-radius: 5px;*/
+        font-size: 18px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 100%;*/
+        text-align: left;
+        /*color: #404040;*/
+        color: #ffffff;
+        /*margin-right: 20px;*/
+      }
+         	.category-name {
+    		display: inline-block;
+    		padding-top: 15px;
+    		padding-bottom: 13px;
+    		font-size: 13px;
+    		/*width: 47%;*/
+    	}
+    	.results1 {
+    		/*display: inline-block;*/
+    		/*width: 48%;*/
+    		/*text-align: right;*/
+    		/*padding-right: 15px;*/
+    		float: right;
+    		padding-left: 8px;
+    		color: #1e88e5;
+			display: inline-block;
+    		padding-top: 10px;
+    		padding-bottom: 3px;
+    		font-size: 15px;
+    		border-left: 1px #f4f4f4 solid;
+    		margin-top: 5px;
+    	}
+
+    	.results2 {
+    		float: right;
+    		padding-right: 8px;
+    		color: #e53935;
+			display: inline-block;
+    		padding-top: 10px;
+    		padding-bottom: 3px;
+    		font-size: 15px;
+    		border-left: 1px #f4f4f4 solid;
+    		margin-top: 5px;
+    		padding-left: 8px;
+    	}
+			.heading2 .results1 {
+    		/*display: inline-block;*/
+    		/*width: 48%;*/
+    		/*text-align: right;*/
+    		/*padding-right: 15px;*/
+    		float: right;
+    		padding-left: 8px;
+    		/*color: red;*/
+			display: inline-block;
+    		padding-top: 10px;
+    		padding-bottom: 3px;
+    		font-size: 15px;
+    		border-left: 1px #eeeeee solid;
+    		margin-top: 5px;
+    	}
+
+    	.heading2 .results2 {
+    		float: right;
+    		padding-right: 8px;
+    		/*color: blue;*/
+			display: inline-block;
+    		padding-top: 10px;
+    		padding-bottom: 3px;
+    		font-size: 15px;
+    		border-left: 1px #eeeeee solid;
+    		margin-top: 5px;
+    		padding-left: 8px;
+    	}
+
+		 .heading1 {
+        padding: 20px 15px;
+        margin-top: 20px;
+        /*background-color: #f0f0f0;*/
+        background-color: #525460;
+        /*border: 1px solid #dedede;*/
+        /*border-top-left-radius: 5px;*/
+        /*border-top-right-radius: 5px;*/
+        font-size: 18px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 100%;*/
+        text-align: left;
+        /*color: #404040;*/
+        color: #ffffff;
+        /*margin-right: 20px;*/
+      }
+      .heading2 {
+      	/*padding: 20px 15px;*/
+        /*margin-top: 20px;*/
+        /*background-color: #f0f0f0;*/
+        /*border: 1px solid #dedede;*/
+/*        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;  */      
+        font-size: 15px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 90%;*/
+        text-align: left;
+        /*margin-right: 20px;*/
+        cursor: pointer;
+        /*margin-left: 10px;*/
+        /*margin-right: 60px;*/
+        /*background-color: red;*/
+        padding-left: 6.2%;
+        /*padding-top: 20px;*/
+        /*padding-bottom: 20px;*/
+        
+        color: #01579b;
+        /*background-color: #c6efff;*/
+        background-color: #f6f6f6;
+        margin-bottom: 1px;
+        padding-right: 15px;
+    }
+
+  .heading3 {
+      	/*padding: 20px 15px;*/
+        /*margin-top: 20px;*/
+        /*background-color: #f0f0f0;*/
+        /*border: 1px solid #dedede;*/
+/*        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;*/
+        font-size: 15px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 95%;*/
+        text-align: left;
+        /*margin-right: 20px;*/
+        cursor: pointer;
+        margin-left: 0px;
+        /*margin-right: 60px;*/
+        /*background-color: red;*/
+        padding-left: 8%;
+        /*padding-top: 20px;*/
+        /*padding-bottom: 20px;*/
+        color: #0277bd;
+        background-color: #fbfbfb;
+        margin-bottom: 1px;
+        font-size: 15px;
+        padding-right: 15px;
+    }
+      .heading4 {
+      	/*padding: 20px 15px;*/
+        /*margin-top: 20px;*/
+        /*background-color: #f0f0f0;*/
+        /*border: 1px solid #dedede;*/
+/*        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;*/
+        font-size: 15px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 90%;*/
+        text-align: left;
+        /*margin-right: 20px;*/
+        cursor: pointer;
+        /*margin-left: 10px;*/
+        /*margin-right: 60px;*/
+        /*background-color: red;*/
+        padding-left: 20px;
+        padding-right: 5px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        color: #6f6f6f;
+        font-size: 13px;
+    }
+      .desc1 {
+      	/*padding: 20px 15px;*/
+        /*margin-top: 20px;*/
+        /*background-color: #f0f0f0;*/
+        /*border: 1px solid #dedede;*/
+/*        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;*/
+        font-size: 14px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 90%;*/
+        text-align: left;
+        margin-right: 15px;
+        cursor: pointer;
+        margin-left: 20px;
+        /*margin-right: 60px;*/
+        /*background-color: red;*/
+/*        padding-top: 15px;
+        padding-bottom: 13px;*/
+        color: #6f6f6f;
+        border-bottom: 1px #f4f4f4 solid;
+      }
+
+       .desc2 {
+      	/*padding: 20px 15px;*/
+        /*margin-top: 20px;*/
+        /*background-color: #f0f0f0;*/
+        /*border: 1px solid #dedede;*/
+/*        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;*/
+        font-size: 14px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 90%;*/
+        text-align: left;
+        margin-right: 15px;
+        cursor: pointer;
+        margin-left: 30px;
+        /*margin-right: 60px;*/
+        /*background-color: red;*/
+/*        padding-top: 15px;
+        padding-bottom: 13px;*/
+        color: #6f6f6f;
+        border-bottom: 1px #f4f4f4 solid;
+      }
+		 .desc3 {
+      	/*padding: 20px 15px;*/
+        /*margin-top: 20px;*/
+        /*background-color: #f0f0f0;*/
+        /*border: 1px solid #dedede;*/
+/*        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;*/
+        font-size: 14px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(100,0,0,0);
+        /*width: 90%;*/
+        text-align: left;
+        margin-right: 15px;
+        cursor: pointer;
+        margin-left: 35px;
+        /*margin-right: 60px;*/
+        /*background-color: red;*/
+/*        padding-top: 15px;
+        padding-bottom: 13px;*/
+        color: #6f6f6f;
+        border-bottom: 1px #f4f4f4 solid;
+      }
+
+      .content {
+        padding-top: 15px;
+        /*padding-bottom: 15px;*/
+        /*border: 1px solid #dedede;*/
+        border-top: none;
+/*        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;*/
+        @apply(--shadow-elevation-2dp);
+        background-color: #ffffff;
+        font-size: 15px;
+        color: #404040;
+      }
+
+      #collapse3 {
+        max-height: 250px;
+      }
+    			.dec {
+    				/*display: inline-block;*/
+    				/*margin-left: 30%;*/
+    				/*margin-right: 30%;*/
+    				/*width: 100%;*/
+    				/*float: none;*/
+    				margin: 0 auto;
+    				margin-left: auto;
+    				margin-right: auto;
+    				/*margin-left: 30%;*/
+    				display: flex;
+    				justify-content: center;
+    			}
+    			#blue {
+    				background-color: #1e88e5;
+    				width: 20px;
+    				color: #1e88e5;
+    				display: inline-block;
+    			}
+    			#red {
+    				background-color: #e53935;
+    				width: 20px;
+    				color: #e53935;
+    				display: inline-block;
+    			}
+    			.college-colors {
+    				display: inline-block;
+    				margin-right: 5%;
+    			}
+    			#college-name {
+    				display: inline-block;
+    				/*margin-right: 2%;*/
+    				color: #060606;
+
+    			}
+
+
+    			.blank {
+    				padding-left: 10px;
+    				padding-right: 10px;
+    				height: 10px;
+    				width: 200px;
+    				color: white;
+    				background-color: white;
+    			}
+ 
+      #main {
+      	width: 99%;
+      	padding-bottom: 10%;
+      }
+
+            .ghost, [hidden] {
+        display: none;
+      }
+      .invisible {
+        visibility: hidden;
+      }
+      .flex-desktop {
+      	padding-right: 20px;
+      	/*background-color: #fefefe;*/
+      }
+			.card-map{
+				background-color: var(--special-font-color);
+				overflow-x: auto;
+				color: white;
+			}
+
+			#mid-container{
+				width: 99%;
+				margin: 0 auto;
+				margin-top: 1%;
+				margin-right: 20px;
+				margin-left: 4px;
+				background-color: fcfcfc;
+			}
+			#container{
+				background-color: #fefefe;
+			}
+			#treeCard{
+				width: 100%;
+				display: block;
+				margin: 0 auto;
+				border-radius: 5px;
+				margin-bottom: 20px;
+			}
+
+			
+			#treeCard .card-content{
+				background-color: var(--main-color);
+				color: white;
+				padding: 32px 16px;
+				font-size: 24px;
+				/*text-align: center;*/
+			}
+
+			
+
+			.bottom-bar{
+				border-top: 1px solid rgba(0,0,0,0.14);
+				@apply(--layout-horizontal);
+				color: black;
+			}
+
+			.bottom-bar div{
+				display: inline-block;
+				@apply(--layout-flex);
+				padding: 10px;
+			}
+			.cat-items {
+				padding: 10px;
+			}
+			@media only screen and (min-width : 640px){
+				#treeCard{
+					width: 90%;
+					display: block;
+					margin: 0 auto;
+					border-radius: 5px;
+				}
+
+			#collegeName, #address{
+				position: absolute;
+				bottom: 60px;
+				margin-left: 20px;
+				color: white;
+				font-size: 34px;
+			}
+
+			#address{
+				bottom: 20px;
+				font-size: 24px;
+			}
+
+			@media only screen and (max-width : 640px){
+				#coverPicContainer{
+					height: 150px;
+				}
+
+				#collegeName{
+					font-size: 18px;
+				}
+
+				#address{
+					font-size: 14px;
+				}
+			}
+
+			@media only screen and (min-width : 640px) and(max-width: 769){
+				#coverPicContainer{
+					height: 200px;
+				}
+
+				#collegeName{
+					font-size: 20px;
+				}
+
+				#address{
+					font-size: 16px;
+				}
+			}
+
+			#backgroundImage{
+				position: absolute;
+				z-index: -1;
+				width: 100%;
+				height: 100%;
+			}
+
+			.section-card{
+				width: 90%;
+				display: block;
+				margin: 0 auto;
+				margin-bottom: 5%;
+			}
+
+			.section-card .card-content{
+				background-color: var(--main-color);
+				color: white;
+			}
+
+			.data-element paper-button.label{
+				font-size: 14px;
+				text-transform: capitalize;
+			}
+			.collapse-content {
+   				 padding: 15px;
+    			 border: 1px solid #dedede;
+  }
+			#loader-wrapper{
+			    position: fixed;
+			    top: 0;
+			    left: 0;
+			    width: 100%;
+			    height: 100%;
+			    opacity: 1;
+			    z-index: 1000;
+				display: table;
+				background-color: white;
+				margin: 0;
+				overflow-x: hidden;
+				overflow-y: hidden;
+				transition: 0.3s opacity;
+			}
+			
+
+			
+
+
+
+
+
+
+
+
+
+            <div class = "dec">
+                                <div class = "college-colors">
+                                    <div id = "red">h</div>
+                                    <div id = "college-name">
+                                    College 1
+                                    </div>
+                                </div> 
+                                <div class = "college-colors">
+                                    <div id = "blue">h</div>
+                                    <div id = "college-name">
+                                    College 2
+                                    </div>
+                                </div> 
+                            </div>
+
+
+
+
+                            <div id="mid-container" class="flex-container-desktop">
+
+
+                <div class="blank">
+                <!-- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa -->
+                </div>
+
+                    <div id="main" class="flex-desktop-2">
+
+                        <div class="heading1" aria-expanded$="[[isExpanded(opened2)]]" aria-controls="fee1" onclick="toggle('#fee1')">Fee Structure</div>
+                         <div class="content">
+                        <iron-collapse id="fee1" tabindex="0" opened="{{opened2}}">
+                            <div class="desc1"> <div class="category-name"> Total Fees </div> <div class="results1"> $70k </div><div class="results2"> $60k </div></div>
+                            <div class="desc2"><div class="category-name"> Tuition Fees </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                            <div class="desc2"> <div class="category-name"> Hostel & Boarding </div> <div class="results1"> $25k </div><div class="results2"> $20k </div></div>
+                            <div class="desc1"> <div class="category-name"> Varies with streams of study </div> <!-- <div class="results1"> $70k </div><div class="results2"> $60k </div> --></div>
+                            <div class="heading2" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee2"  onclick="toggle('#fee2')"><div class="category-name">+ Engineering :</div> <div class="results1"> $60k</div> <div class="results2"> $50k</div>
+                            </div>
+                             <iron-collapse id="fee2" tabindex="0">
+                              <div class="desc3"><div class="category-name"> Tuition Fees </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                              <div class="desc3"><div class="category-name"> Hostel & Boarding </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee3"  onclick="toggle('#fee3')"><div class="category-name">+ Undergraduate</div> <div class="results1">$50k</div><div class="results2">$40k</div>
+                              </div>    
+                                <iron-collapse id="fee3" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee5"  onclick="toggle('#fee5')"><div class="category-name">+ Masters</div> <div class="results1">$55k</div><div class="results2">$60k</div>
+                              </div>    
+                              <iron-collapse id="fee5" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee7"  onclick="toggle('#fee7')"><div class="category-name">+ Doctoral</div> <div class="results1">$40k</div><div class="results2">$50k</div>
+                              <iron-collapse id="fee7" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              </div>    
+                             </iron-collapse>
+                            <div class="heading2" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee8"  onclick="toggle('#fee8')"><div class="category-name">+ Architecture :</div> <div class="results1"> $40k</div> <div class="results2"> $30k</div>
+                            </div>      
+                             <iron-collapse id="fee8" tabindex="0">
+                              <div class="desc3"><div class="category-name"> Tuition Fees </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                              <div class="desc3"><div class="category-name"> Hostel & Boarding </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee9"  onclick="toggle('#fee9')"><div class="category-name">+ Undergraduate</div> <div class="results1">$50k</div><div class="results2">$40k</div>
+                              </div>    
+                                <iron-collapse id="fee9" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee10"  onclick="toggle('#fee10')"><div class="category-name">+ Masters</div> <div class="results1">$55k</div><div class="results2">$60k</div>
+                              </div>    
+                              <iron-collapse id="fee10" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee11"  onclick="toggle('#fee11')"><div class="category-name">+ Doctoral</div> <div class="results1">$40k</div><div class="results2">$50k</div>
+                              </div>
+                              <iron-collapse id="fee11" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                                
+                             </iron-collapse>           
+                            <div class="heading2" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee12"  onclick="toggle('#fee12')"><div class="category-name">+ Medical :</div> <div class="results1"> $70k</div> <div class="results2"> $75k</div></div>
+                             <iron-collapse id="fee12" tabindex="0">
+                              <div class="desc3"><div class="category-name"> Tuition Fees </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                              <div class="desc3"><div class="category-name"> Hostel & Boarding </div> <div class="results1"> $45k </div><div class="results2"> $40k </div></div>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee13"  onclick="toggle('#fee13')"><div class="category-name">+ Undergraduate</div> <div class="results1">$50k</div><div class="results2">$40k</div>
+                              </div>    
+                                <iron-collapse id="fee13" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee14"  onclick="toggle('#fee14')"><div class="category-name">+ Masters</div> <div class="results1">$55k</div><div class="results2">$60k</div>
+                              </div>    
+                              <iron-collapse id="fee14" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                              <div class="heading3" aria-expanded$="[[isExpanded(opened3)]]" aria-controls="fee15"  onclick="toggle('#fee15')"><div class="category-name">+ Doctoral</div>
+                               <div class="results1">$40k</div><div class="results2">$50k</div>
+                               </div>
+                              <iron-collapse id="fee15" tabindex="0">
+                                <div class="heading4">Detail about this branch goes here.</div>
+                                </iron-collapse>
+                            
+                             </iron-collapse>
+                             </iron-collapse>
+                            </div>                                                      
+                        
+
+                        </div>
+
+                    
+                    <div class="blank"></div>
+
+                </div>

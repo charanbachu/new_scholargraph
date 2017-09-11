@@ -1,0 +1,583 @@
+<!--Importing polymer elements-->
+
+<dom-module id="question-display">
+	<style is="custom-style">
+		:host{
+			font-family: 'Roboto', 'Noto', sans-serif;
+		};
+		paper-card{
+			width: 100%;
+			position: relative;
+			opacity: 0;
+		}
+		
+		.card-content{
+			background-color: #fff;
+			margin: 0;
+			padding-bottom: 5%;
+			padding-top: 5px;
+			color: #595959;
+			text-align: center;
+		}
+		#subheading{
+			margin-top: 9%;
+			font-size: 18px;
+			font-weight: 600;
+		}
+		#parentNode{
+			margin-top: 20px;
+		}
+		.card-actions{
+			height: auto;
+			cursor: pointer;
+			margin: 0%;
+			padding: 0%;
+		}
+		#yesNo, #radio, #paperInput{
+			width: 100%;
+			@apply(--layout-horizontal);
+			display: none;
+		}
+		#radio1
+	    {
+	      @apply(--layout-horizontal);
+	      display: none;
+	    }
+
+	    #card_psycho, #card_structural{
+	    	display: none;	
+	    }
+		.actions{
+			position: relative;
+			display: inline-block;
+			width: 22%;
+			text-align: center;
+			line-height: 2;
+			padding: 5%;
+			padding-top: 14px;
+			padding-bottom: 14px;
+		}
+		 .answer-radio {
+	      float: left;
+	       position: relative;
+	       z-index: 2;
+
+	    }
+		.radioActions{
+	      width: 100%;
+	      color: white;
+	      opacity: 1;
+	      padding: 5px 2px 5px 8px;
+	      margin-top: 3px;
+	      background-color: #AFAFAF;
+	      border-radius: 0px;
+	      position: relative;
+	      height: auto;
+	      font-size: 15px;
+	    }
+		.radioAction{
+	      width: 100%;
+	      color: white;
+	      opacity: 1;
+	      padding: 5px 2px 5px 8px;
+	      margin-top: 3px;
+	      background-color: #AFAFAF;
+	      border-radius: 0px;
+	      position: relative;
+	      height: auto;
+	      font-size: 15px;
+	    }
+
+	    .percentage {
+	        color: #999;
+	        font-weight: bold;
+	        position: relative;
+	        float: right;
+	        z-index: 2;
+	    }
+		iron-icon{
+			--iron-icon-fill-color: currentcolor;
+		}
+		#schoolIcon{
+			--iron-icon-fill-color: white;
+		}
+		paper-fab{
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			--paper-fab-background: #009688;
+		}
+		#checkboxDiv{
+			box-sizing: border-box;
+			display: none;
+		}
+		#checkboxContainer{
+			padding: 10px;
+			padding-left: 25px;
+			padding-top: 5px;
+			padding-bottom: 0px;
+		}
+		paper-checkbox{
+			/*--paper-checkbox-unchecked-color: ;*/
+			--paper-checkbox-unchecked-ink-color: #009688;
+			--paper-checkbox-checked-color: #009688;
+			--paper-checkbox-size: 15px;
+			--paper-checkbox-unchecked-color: #595959;
+			--paper-checkbox-checked-ink-color: #009688;
+			margin: 5px;
+		}
+		#nextCheckButton{
+			float: right;
+			color: white;
+			background-color: #009688;
+			margin: 20px;
+			/*margin-top: -20px;*/
+		}
+		#nextCheckButton iron-icon{
+			--iron-icon-fill-color: white;
+		}
+		#closeFab{
+			display: none;
+			z-index: 100;
+		}
+		#skim{
+			height: 100vh;
+			width: 0;
+			position: fixed;
+			z-index: 99;
+			left: 0;
+			top: 0;
+			background-color: grey; /* fallback color */
+		    background-color: rgba(0,0,0, 0.7); /* Black w/opacity */
+		    overflow-x: hidden;
+		}
+		.rghtPaper {
+		    display: flex;
+		    flex-direction: column;
+		    padding: 14px 15px 25px 5px;
+		    width: 100%;
+		    box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+			border-top: 1px solid rgba(0, 0, 0, 0.04);
+		}
+		.rgtPap {
+			display: flex; 
+			align-items: center; 
+			justify-content: center;
+		}
+		.checkval {
+			font-size:16px; 
+			color: #AFAFAF;
+		}
+		@media only screen and (max-width : 768px){
+			#subheading {
+				margin-top: 3%;
+				font-size: 18px;
+				font-weight: 600;
+			}
+			.checkval {
+				font-size:15px; 
+				color: #AFAFAF;
+			}
+		}
+		@media only screen and (max-width : 600px){
+			paper-card{
+				width: 100%;
+			}
+		}
+	</style>
+	<template id="dom-bind">
+		<paper-card id="dialog" class="rghtPaper">
+			<div class="card-content" style="padding: 0px;">
+				<div class="rgtPap">
+					<div style="font-size: 15px; color: #009688; font-weight: bold; text-align: center;"><span>Help improve your College Profile Details</span></div>
+				</div>
+				<div id="head" style="margin-top: 20px; color: #009688; font-size: 15px; font-weight: bold;">{{response.heading}}</div>
+                <div id="parentNode">{{parentNodes}}</div>
+				<div id="subheading" style="font-size:14px; padding: 0px 20px 0px 20px; text-align: left; margin-bottom: 15px;">{{response.question}}</div>
+			</div>
+			
+			
+			<div class="card-actions" id = "card_psycho" style="border-top: none;">
+				<form id="inputForm" is="iron-form">
+					<div id="paperInput" style="width: 70%; margin: 0 auto; --paper-input-container-focus-color: {{response.header}};">
+						<paper-input id="paperinput" label='{{response.unit_currency_code}} ' prevent-invalid-input allowed-pattern="\d">
+						<iron-icon suffix icon="send" on-click="fetchNext"></iron-icon></paper-input>
+					</div>
+				</form>
+
+				<div id="checkboxDiv">
+					<form is="iron-form" id="checkboxForm">
+					<div id="checkboxContainer">
+						<template is="dom-repeat" items="{{response.options}}">
+							<paper-checkbox><span class="checkval">{{item.value}}</span></paper-checkbox><br>
+						</template>
+					</div>
+					</form>
+				</div>
+
+				<div id="yesNO">
+					<div class="actions" on-click="fetchNext" data-args="0">
+						<iron-icon icon="check-circle" id="checkIcon" data-args="0"></iron-icon><br>
+						YES
+					</div>
+					<div class="actions" on-click="fetchNext" data-args="1">
+						<iron-icon icon="highlight-off" data-args="1"></iron-icon><br>
+						NO
+					</div>
+					<div class="actions" on-click="fetchNext" data-args="2">
+						<iron-icon icon="help-outline" data-args="2"></iron-icon><br>
+						NOT SURE
+					</div>
+				</div>
+
+				
+		        <div id="ans_radio">
+		          <template is="dom-repeat" items="{{response.options}}" style="width: 100%;">
+		            <div class = "radioAction" style="background: linear-gradient(to right,  {{item.color}} 0%,{{item.color}} {{item.percentage}}%,#f6f6f6 {{item.percentage}}%,#f6f6f6 100%); width: 100%; min-height: 17px ">
+		            <div class="answer-radio" on-click="fetchNext" data-args$="{{index}}" style="text-align: left; font-size: 14px;font-weight: 400;color: #505A57">
+		            {{item.value}}</div>
+		            <div class="percentage" style="color:black; text-align: right; font-size: 14px; font-weight: 400">{{item.percentage}}%</div>
+		            </div> 
+		          </template>
+		         </div>
+		        <div id="radio" >
+		          <template is="dom-repeat" items="{{response.options}}" style="width: 100%;">
+		            <div class="radioActions" on-click="fetchNext" data-args$="{{index}}" style="width: 100%;">
+			            <!-- <iron-icon class="yno" icon="icons:thumb-up"></iron-icon> -->
+			            <paper-ripple></paper-ripple>
+			           {{item.value}}
+			        </div>
+		          </template>
+		        </div>
+      		</div>
+      		<div class="bsub" style="margin-top: 25px; display: flex; justify-content: center; align-items: center;">
+				<paper-button id="nextCheckButton" on-click="fetchNext" style="background-color: #AFAFAF; opacity: 1; color: #fff; font-weight: 400; font-size: 14px; border-radius: 1px; padding: 5px 10px 5px 10px; margin: 0px;">Next
+                    <iron-icon class="sbt" icon="arrow-forward"></iron-icon>
+                </paper-button>
+            </div>
+		</paper-card>
+		<!-- Iron ajax will do all the ajax work 
+			url will be provided in the element's url attribute.
+			params are the parameters we want to pass through ajax.
+		-->
+		<iron-ajax
+			id="myIronAjax"
+			url="{{url}}"
+			params="{{ajaxParams}}"
+			handle-as="json"
+			on-response="handleResponse"
+			last-response="{{response}}"
+		></iron-ajax>
+	</template>
+
+	<script>
+		Polymer({
+			is: "question-display",
+			properties: {
+				heading: {
+					type: String
+				},
+				url: {
+					type: String
+				},
+				exit: {
+					type: String
+				},
+				parentNodes: {
+					type: String
+				},
+				cardOpened: {
+					type: Boolean,
+					value : false
+				},
+				ajaxParams: {
+					type: Object,
+					value: function(){ return { "firstQuestion" : "true" } }, //Only for the first time it is true
+					notify: true
+				}
+			},
+			attached: function(){
+				//when this element gets attached to the document, make first ajax request.
+				console.log("attached");
+				this.ajaxRequest();
+			},
+			fetchNext: function(e){
+				var ajax = document.getElementById("myIronAjax");
+		        if( ajax.lastResponse.ques_count <= 6)
+		        {
+		          var class_val = e.target.getAttribute('class');
+			        console.log(class_val.indexOf("radioActions"));
+			        if(class_val.indexOf("radioActions") == 0)
+			        {
+			          var radio = document.getElementById('radio');
+			          var value = e.target.getAttribute('data-args');
+			          this.set('response.options.'+value+'.color','#73DCCB');
+
+			           var ajax = document.getElementById("myIronAjax");
+			          var answer = ajax.lastResponse.options.length;
+			          var i=0;
+			          var total = 0;
+			          var opt_value = [];
+			          for(i=0;i< answer;i++)
+			          {
+			            total = total + parseInt(ajax.lastResponse.options[i]['percentage']);
+			            if(value == i)
+			            {
+			              total = total + 1;
+			              opt_value[i] = parseInt(ajax.lastResponse.options[i]['percentage']) + 1;
+			            }
+			            else
+			            {
+			             this.set('response.options.'+i+'.color','#D5CEB1');
+
+			              opt_value[i] = parseInt(ajax.lastResponse.options[i]['percentage']);
+			            }
+			          }
+			          for(i=0;i< answer;i++)
+			          {
+			            console.log(opt_value[i]);
+			            percentage =  (opt_value[i]*100) / total;
+			            console.log(percentage);
+			            percentage = percentage.toFixed(2);
+			            this.set('response.options.'+i+'.percentage',percentage);
+			          }          
+
+			          console.log(answer);
+			          var ans_radio =  document.getElementById('ans_radio');
+			          radio.style.display = 'none';
+			          ans_radio.style.display = 'block';
+			           setTimeout(function(){
+			          card = document.getElementById('dialog');
+			          card.style.opacity = "0";
+			            },2000);
+			          setTimeout(function(){
+			          	ans_radio.style.display = 'none';
+			          document.getElementById("myIronAjax").generateRequest();
+			          console.log('enter');
+			          
+			           card.style.opacity = "0";
+			          },3000);
+			                this.ajaxParams = {
+			                  "ans": document.querySelector('paper-input').value,
+			                  "type": e.target.getAttribute('data-args'),
+			                  "firstQuestion": "false"
+			              };
+
+			          
+			        }
+			        if(e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton")
+			        {
+			            setTimeout(function(){
+			            card = document.getElementById('dialog');
+			            card.style.opacity = "1";
+			            
+			            this.cardOpened = false;
+			              },650);
+			            setTimeout(function(){
+			            document.getElementById("myIronAjax").generateRequest();
+			            console.log('enter');
+			            },1150);
+			                  this.ajaxParams = {
+			                    "ans": document.querySelector('paper-input').value,
+			                    "type": e.target.getAttribute('data-args'),
+			                    "firstQuestion": "false"
+			                };
+			        }
+		        } 
+		        
+		        else if( ajax.lastResponse.ques_count > 6)
+		        {
+		        	this.close(e);
+					console.log("fetchNext");
+					if(e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton"){
+						var checkboxes = document.getElementById("checkboxContainer").querySelectorAll("paper-checkbox");
+						var checks = [];
+						for(i = 0;i < checkboxes.length;i++){
+							checks[i] = checkboxes[i].checked ? 1 : 0;
+						}
+						
+						this.ajaxParams = {
+							"checkboxes" : '"' + checks + '"',
+							"firstQuestion": "false"
+						};
+						var form = document.getElementById("checkboxForm");
+					    form.reset();
+					}
+					else{
+						console.log(document.querySelector('#paperinput').value);
+						this.ajaxParams = {
+							"ans": document.querySelector('#paperinput').value,
+							"type": e.target.getAttribute('data-args'),
+							"firstQuestion": "false"
+						};
+					}
+					console.log(this.ajaxParams.checkboxes);
+					setTimeout(function(){
+						document.getElementById("myIronAjax").generateRequest();
+						var input = document.getElementById("inputForm");
+						input.reset();
+					},350);
+
+		        }
+		      
+				
+			},
+			ajaxRequest: function(){
+				document.getElementById("myIronAjax").generateRequest();
+			},
+			handleResponse: function(){
+        		var card_psycho = document.getElementById('card_psycho');
+				var ajax = document.getElementById("myIronAjax");
+				if(ajax.lastResponse.ques_count > 6)
+        		{
+        			
+					var main = document.getElementById('dialog');
+					var yesNO = document.getElementById('yesNO');
+					var radio = document.getElementById('radio');
+					var closefab = document.getElementById('closeFab');
+					var paperInput = document.getElementById('paperInput');
+					var checkboxDiv = document.getElementById('checkboxDiv');
+			        var ans_radio = document.getElementById('ans_radio');
+
+					 var flag = 0;
+					 card_psycho.style.display = 'block';
+					 ans_radio.style.display = 'none';
+
+					if(ajax.lastResponse.options[0]['value'] == "redirect" || ajax.lastResponse.options[0]['value'] == "completed"){
+						main.style.display='none';
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+					}
+
+					else if(ajax.lastResponse.opt_num == "0"){
+						
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						paperInput.style.display = 'block';
+						checkboxDiv.style.display = 'none';
+					}
+					else if(ajax.lastResponse.options[0]['value'] == "insert"){
+						flag = 1;
+						ajax.lastResponse.options.splice(0,1);
+						yesNO.style.display = 'none';
+						radio.style.display = 'block';
+						paperInput.style.display = 'block';
+						checkboxDiv.style.display = 'none';
+					}
+					else if(ajax.lastResponse.options[0]['value'] == "checkbox"){
+						flag = 2;
+						ajax.lastResponse.options.splice(0,1);
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'block';
+					}
+					else if(ajax.lastResponse.opt_num == "3" && ajax.lastResponse.options[0]['value'] == "Yes"){
+						yesNO.style.display = 'block';
+						radio.style.display = 'none';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+					}
+					else{
+						yesNO.style.display = 'none';
+						radio.style.display = 'block';
+						paperInput.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+					}
+
+	        		
+					var parentArray = ajax.lastResponse.parent;
+					var parentNodes = parentArray[Object.keys(parentArray).length-2];
+					for(var i = Object.keys(parentArray).length-4;i >= 0;i-=2){
+						parentNodes += " -> " + parentArray[i];
+					}
+					this.parentNodes = parentNodes;
+					// console.log(parentNodes);
+					console.log("handleResponse " + this.ajaxParams.firstQuestion);
+					 if(ajax.lastResponse.ques_count != -1)
+			        {
+			        	this.open()
+			        }
+			        else
+			        {
+			          	console.log("Opening from handleResponse"); 
+			        	this.close();
+			        }
+
+					
+
+					
+				}
+				else
+				{
+
+			        var main = document.getElementById('dialog');
+			        var radio = document.getElementById('radio');
+			        var yesNO = document.getElementById('yesNO');
+			        var ans_radio = document.getElementById('ans_radio');
+					var checkboxDiv = document.getElementById('checkboxDiv');	
+			         card_psycho.style.display = 'block';
+
+			        if(ajax.lastResponse.options[0]['value'] == "redirect"){
+			        	main.style.display='none';
+						yesNO.style.display = 'none';
+						radio.style.display = 'none';
+						ans_radio.style.display = 'none';
+						checkboxDiv.style.display = 'none';
+						card_psycho.style.display = 'none';
+			        }
+
+			        else
+			        {
+			          ans_radio.style.display = 'none';
+			          radio.style.display = 'block';
+			          yesNO.style.display = 'none';
+					 checkboxDiv.style.display = 'none';
+
+			        }
+			        
+
+			        console.log("handleResponse " + this.ajaxParams.firstQuestion);
+			        if(ajax.lastResponse.ques_count != -1)
+			        {
+			        	this.open()
+			        }
+			        else
+			        {
+			          	console.log("Opening from handleResponse"); 
+			        	this.close();
+			        }
+			        
+
+				}
+			},
+			toggle: function(){
+				console.log("toggle "+this.cardOpened);
+				var ajax = document.getElementById("myIronAjax");
+				if(this.cardOpened === true){
+					this.close(e);
+				}
+				else{
+					document.getElementById("skim").style.width = "100vw";
+					this.open();
+				}
+			},
+			open: function(){
+				console.log("open");
+				card = document.getElementById('dialog');
+				card.style.opacity = "1";
+				this.cardOpened = true;
+			},
+			close: function(e){
+				console.log("close");
+				card = document.getElementById('dialog');
+				card.style.opacity = "0";
+				this.cardOpened = false;
+				console.log(this.cardOpened);
+			}
+		});
+
+	</script>
+</dom-module>

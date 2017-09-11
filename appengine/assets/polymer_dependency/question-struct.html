@@ -1,0 +1,467 @@
+<!--Importing polymer elements-->
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="bower_components/iron-form/iron-form.html">
+<link rel="import" href="bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="bower_components/iron-icons/social-icons.html">
+<link rel="import" href="bower_components/iron-form/iron-form.html">
+<link rel="import" href="bower_components/paper-card/paper-card.html">
+<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+<dom-module id="question-struct">
+	<style is="custom-style">
+		:host{
+			font-family: 'Roboto', 'Noto', sans-serif;
+		};
+		@media only screen and (max-width : 600px){
+			paper-card{
+				width: 70%;
+			}
+		}
+		paper-card.dialog{
+			width: 30%;
+			min-width: 350px;
+			position: fixed;
+			z-index: 100;
+			left: 150%;
+			opacity: 0;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transition: left .35s ease-out, opacity .35s ease-out;
+			-webkit-transition: left .35s ease-out, opacity .35s ease-out;
+		}
+		 paper-card.parent-dialog{
+		 display: none;
+	      width: 30%;
+	      min-width: 350px;
+	      position: fixed;
+	      background: #ffffff;
+	      z-index: 100;
+	      left: 150%;
+	      opacity: 0;
+	      top: 50%;
+	      transform: translate(-50%, -50%);
+	      -webkit-transform: translate(-50%, -50%);
+	      -ms-transform: translate(-50%, -50%);
+	      transition: left .55s ease-out;
+	      -webkit-transition: left .35s ease-out;
+	    }
+		.card-content{
+			background-color: #f44336;
+			margin: 0;
+			padding: 15%;
+			padding-bottom: 5%;
+			padding-top: 7%;
+			color: white;
+			text-align: center;
+		}
+		#subheading{
+			margin-top: 10%;
+			font-size: 18px;
+			font-weight: 600;
+		}
+		#parentNode{
+			margin-top: 20px;
+		}
+		.card-actions{
+			height: auto;
+			cursor: pointer;
+			margin: 0%;
+			padding: 0%;
+		}
+		#yesNo, #radio, #paperInput{
+			width: 100%;
+			@apply(--layout-horizontal);
+			display: none;
+		}
+		.actions{
+			position: relative;
+			display: inline-block;
+			width: 22%;
+			text-align: center;
+			line-height: 2;
+			padding: 5%;
+			padding-top: 14px;
+			padding-bottom: 14px;
+		}
+		.radioActions{
+			text-align: center;
+			margin: 5%;
+			margin-left: 20%;
+			margin-right: 20%;
+			color: white;
+			background-color: #f44336;
+			padding: 2%;
+			border-radius: 10px;
+			position: relative;
+		}
+		iron-icon{
+			--iron-icon-fill-color: #001233;
+		}
+		#schoolIcon{
+			--iron-icon-fill-color: white;
+		}
+		paper-fab{
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			--paper-fab-background:Null;
+		}
+		#checkboxDiv{
+			box-sizing: border-box;
+			display: none;
+		}
+		#checkboxContainer{
+			padding: 30px;
+			padding-bottom: 0px;
+		}
+		paper-checkbox{
+			/*--paper-checkbox-unchecked-color: ;*/
+			--paper-checkbox-unchecked-ink-color: black;
+			--paper-checkbox-checked-color: black;
+			--paper-checkbox-checked-ink-color: black;
+			margin: 5px;
+		}
+		#nextCheckButton{
+			float: right;
+			color: white;
+			background-color: #ffffff;
+			margin: 20px;
+			/*margin-top: -20px;*/
+		}
+		#nextCheckButton iron-icon{
+			--iron-icon-fill-color: white;
+		}
+		#closeFab{
+			display: none;
+			z-index: 100;
+		}
+		#skim{
+			height: 100vh;
+			width: 0;
+			position: fixed;
+			z-index: 99;
+			left: 0;
+			top: 0;
+			background-color: grey; /* fallback color */
+		    background-color: rgba(0,0,0, 0.7); /* Black w/opacity */
+		    overflow-x: hidden;
+		}
+	</style>
+
+	<template id="dom-bind">
+		<div id="skim"></div>
+		<a href="{{exit}}"><paper-fab icon="close" id="closeFab" color="#f44336" on-click="close"></paper-fab></a>
+		<paper-card id="dialog" class= "dialog">
+			<div class="card-content" style="background-color:{{response.header}}">
+				<iron-icon id="schoolIcon" icon="social:school"></iron-icon><br>
+				<div id="head">{{response.heading}}</div>
+				<div id="parentNode">{{parentNodes}}</div>
+				<div id="subheading">{{response.question}}</div>
+			</div>
+			<div class="card-actions">
+				<form id="inputForm" is="iron-form">
+					<div id="paperInput" style="width: 70%; margin: 0 auto; --paper-input-container-focus-color: {{response.header}};">
+						<paper-input><iron-icon suffix icon="send" on-click="fetchNext"></iron-icon></paper-input>
+					</div>
+				</form>
+
+				<div id="checkboxDiv">
+					<form is="iron-form" id="checkboxForm">
+					<div id="checkboxContainer">
+						<template is="dom-repeat" items="{{response.options}}">
+							<paper-checkbox>{{item}}</paper-checkbox><br>
+						</template>
+					</div>
+					<paper-button id="nextCheckButton" on-click="fetchNext" style = "background-color:{{response.header}} ">Next <iron-icon icon="arrow-forward"></iron-icon></paper-button>
+					</form>
+				</div>
+
+				<div id="yesNO">
+					<div class="actions" on-click="fetchNext" data-args="0">
+						<paper-ripple></paper-ripple>
+						<iron-icon icon="check-circle" id="checkIcon" data-args="0"></iron-icon><br>
+						YES
+					</div>
+					<div class="actions" on-click="fetchNext" data-args="1">
+						<paper-ripple></paper-ripple>
+						<iron-icon icon="highlight-off" data-args="1"></iron-icon><br>
+						NO
+					</div>
+					<div class="actions" on-click="fetchNext" data-args="2">
+						<paper-ripple></paper-ripple>
+						<iron-icon icon="help-outline" data-args="2"></iron-icon><br>
+						NOT SURE
+					</div>
+				</div>
+
+				<div id="radio">
+					<template is="dom-repeat" items="{{response.options}}">
+						<div class="radioActions" on-click="fetchNext" data-args$="{{index}}" style="background-color:{{response.header}}">
+						<paper-ripple></paper-ripple>
+						{{item}}</div>
+					</template>
+				</div>
+
+			</div>
+		</paper-card>
+		
+		<paper-card class = "parent-dialog" id = "parent-dialog">
+	     <div class="card-content" style="background-color:{{response.header}}">
+	        <iron-icon id="schoolIcon" icon="social:school"></iron-icon><br>
+	        <div id="head">{{response.heading}}</div>
+	        <div id="subheading">{{parentNodes}} questions</div>
+	      </div>
+	    </paper-card>
+
+		<!-- Iron ajax will do all the ajax work 
+			url will be provided in the element's url attribute.
+			params are the parameters we want to pass through ajax.
+		-->
+		<iron-ajax
+			id="myIronAjax"
+			url="{{url}}"
+			params="{{ajaxParams}}"
+			handle-as="json"
+			on-response="handleResponse"
+			last-response="{{response}}"
+		></iron-ajax>
+	</template>
+
+	<script>
+		Polymer({
+			is: "question-struct",
+			properties: {
+				heading: {
+					type: String
+				},
+				url: {
+					type: String
+				},
+				exit: {
+					type: String
+				},
+				parentNodes: {
+					type: String
+				},
+				cardOpened: {
+					type: Boolean,
+					value : false
+				},
+				ajaxParams: {
+					type: Object,
+					value: function(){ return { "firstQuestion" : "true" } }, //Only for the first time it is true
+					notify: true
+				}
+			},
+			attached: function(){
+				//when this element gets attached to the document, make first ajax request.
+				console.log("attached");
+				this.ajaxRequest();
+			},
+			fetchNext: function(e){
+				this.close(e);
+				console.log("fetchNext");
+				console.log(e.target.getAttribute('id') + " " + e.target.parentNode.getAttribute('id'));
+				if(e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton"){
+					var checkboxes = document.getElementById("checkboxContainer").querySelectorAll("paper-checkbox");
+					var checks = [];
+					for(i = 0;i < checkboxes.length;i++){
+						checks[i] = checkboxes[i].checked ? 1 : 0;
+					}
+					
+					this.ajaxParams = {
+						"checkboxes" : '"' + checks + '"',
+						"firstQuestion": "false"
+					};
+					var form = document.getElementById("checkboxForm");
+				    form.reset();
+				}
+				else{
+					this.ajaxParams = {
+						"ans": document.querySelector('paper-input').value,
+						"type": e.target.getAttribute('data-args'),
+						"firstQuestion": "false"
+					};
+				}
+				console.log(this.ajaxParams.checkboxes);
+				setTimeout(function(){
+					document.getElementById("myIronAjax").generateRequest();
+					var input = document.getElementById("inputForm");
+					input.reset();
+				},350);
+			},
+			ajaxRequest: function(){
+				document.getElementById("myIronAjax").generateRequest();
+			},
+			handleResponse: function(){
+				var main = document.getElementById('dialog');
+				var ajax = document.getElementById("myIronAjax");
+				var yesNO = document.getElementById('yesNO');
+				var radio = document.getElementById('radio');
+				var closefab = document.getElementById('closeFab');
+				var paperInput = document.getElementById('paperInput');
+				var checkboxDiv = document.getElementById('checkboxDiv');
+				 var lowerdiv = document.getElementById('parent-dialog');
+				 var flag = 0;
+				if(ajax.lastResponse.options[0] == "redirect" ){
+					console.log("redirect to : " + ajax.lastResponse.options[1]);
+					(function(){
+						window.location.href = ajax.lastResponse.options[1];
+					})();
+				}
+				else if(ajax.lastResponse.options[0] == "completed"){
+					yesNO.style.display = 'none';
+					radio.style.display = 'none';
+					paperInput.style.display = 'none';
+					checkboxDiv.style.display = 'none';
+					closefab.style.display = 'none';
+
+				}
+
+				else if(ajax.lastResponse.opt_num == "0"){
+					
+					yesNO.style.display = 'none';
+					radio.style.display = 'none';
+					paperInput.style.display = 'block';
+					checkboxDiv.style.display = 'none';
+				}
+				else if(ajax.lastResponse.options[0] == "insert"){
+					flag = 1;
+					ajax.lastResponse.options.splice(0,1);
+					yesNO.style.display = 'none';
+					radio.style.display = 'block';
+					paperInput.style.display = 'block';
+					checkboxDiv.style.display = 'none';
+				}
+				else if(ajax.lastResponse.options[0] == "checkbox"){
+					flag = 2;
+					ajax.lastResponse.options.splice(0,1);
+					yesNO.style.display = 'none';
+					radio.style.display = 'none';
+					paperInput.style.display = 'none';
+					checkboxDiv.style.display = 'block';
+				}
+				else if(ajax.lastResponse.opt_num == "3" && ajax.lastResponse.options[0] == "Yes"){
+					yesNO.style.display = 'block';
+					radio.style.display = 'none';
+					paperInput.style.display = 'none';
+					checkboxDiv.style.display = 'none';
+				}
+				else{
+					yesNO.style.display = 'none';
+					radio.style.display = 'block';
+					paperInput.style.display = 'none';
+					checkboxDiv.style.display = 'none';
+				}
+
+				if(ajax.lastResponse.ques_flag == "1")
+        		{
+        			main.style.display = 'none';
+		          	yesNO.style.display = 'none';
+					radio.style.display = 'none';
+					paperInput.style.display = 'none';
+					checkboxDiv.style.display = 'none';
+
+		          	lowerdiv.style.display = 'block';
+		         	setTimeout(function()
+		         	{
+			          	lowerdiv.style.display = 'none';
+			          	main.style.display = 'block';
+			          	if(ajax.lastResponse.opt_num == "0")
+			          	{
+							paperInput.style.display = 'block';
+						}
+						else if(flag == 1)
+						{
+							radio.style.display = 'block';
+							paperInput.style.display = 'block';
+						}
+						else if(flag == 2)
+						{
+							checkboxDiv.style.display = 'block';
+						}
+						else if(ajax.lastResponse.opt_num == "3" && ajax.lastResponse.options[0] == "Yes")
+						{
+							yesNO.style.display = 'block';
+						}
+						else
+						{
+							radio.style.display = 'block';
+						}
+		          	},2550);
+        		}
+        		
+				var parentArray = ajax.lastResponse.parent;
+				var parentNodes = parentArray[Object.keys(parentArray).length-2];
+				for(var i = Object.keys(parentArray).length-4;i >= 0;i-=2){
+					parentNodes += " -> " + parentArray[i];
+				}
+				this.parentNodes = parentNodes;
+				// console.log(parentNodes);
+				console.log("handleResponse " + this.ajaxParams.firstQuestion);
+				if(ajax.lastResponse != null && ajax.lastResponse.options[0] != "redirect" && this.ajaxParams.firstQuestion == "false"){
+					console.log("Opening from handleResponse"); 
+					this.open();
+				}
+			},
+			toggle: function(){
+				console.log("toggle "+this.cardOpened);
+				if(this.cardOpened === true){
+					this.close(e);
+				}
+				else{
+					document.getElementById("skim").style.width = "100vw";
+					this.open();
+					var ajax = document.getElementById("myIronAjax");
+					if(ajax.lastResponse.options[0] == "completed")
+					{
+						setTimeout(function(){
+							document.getElementById('closeFab').click();
+						},1000);
+					}
+				}
+			},
+			open: function(){
+				console.log("open");
+				card = document.getElementById('dialog');
+				card.style.transitionProperty = "left,opacity";
+				card.style.left = "50%";
+				card.style.opacity = "1";
+				parentcard = document.getElementById('parent-dialog');
+				parentcard.style.transitionProperty = "left,opacity";
+				parentcard.style.left = "50%";
+				parentcard.style.opacity = "1";
+				document.getElementById('closeFab').style.display = "block";
+				this.parentcardOpened = true;
+			},
+			close: function(e){
+				console.log("close");
+				if(e.target.getAttribute("id") == "closeFab"){
+					e.target.style.display = "none";
+					document.getElementById("skim").style.width = "0px";
+				}
+				else if(e.target.parentNode.getAttribute("id") == "closeFab"){
+					e.target.parentNode.style.display = "none";
+					document.getElementById("skim").style.width = "0px";
+				}
+				card = document.getElementById('dialog');
+				card.style.left = "-20%";
+				card.style.opacity = "0";
+				setTimeout(function(){
+					console.log("TimeOut");
+					card.style.transitionProperty = "none";
+					card.style.left = "120%";
+				},350);
+				this.cardOpened = false;
+				console.log(this.cardOpened);
+			}
+		});
+	</script>
+</dom-module>

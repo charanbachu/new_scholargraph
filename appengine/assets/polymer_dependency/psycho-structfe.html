@@ -1,0 +1,1186 @@
+<!--Importing polymer elements-->
+<dom-module id="psycho-struct">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <style is="custom-style">
+    :host {
+        font-family: 'Roboto', 'Noto', sans-serif;
+    }
+    
+    ;
+    @media only screen and (max-width: 600px) {
+        paper-card {
+            width: 40%;
+        }
+    }
+    
+    paper-card.dialog {
+        width: 30%;
+        min-width: 350px;
+        position: fixed;
+        z-index: 100;
+        left: 150%;
+        opacity: 0;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transition: left .35s ease-out, opacity .35s ease-out;
+        -webkit-transition: left .35s ease-out, opacity .35s ease-out;
+    }
+    
+    paper-card.parent-dialog {
+        display: none;
+        width: 30%;
+        min-width: 350px;
+        position: fixed;
+        background: #3B424B;
+        z-index: 100;
+        left: 150%;
+        opacity: 0;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transition: left .35s ease-out, opacity .35s ease-out;
+        -webkit-transition: left .35s ease-out, opacity .35s ease-out;
+    }
+    
+    .card-content {
+        background-color: #001233;
+        margin: 0;
+        padding-bottom: 5%;
+        padding-top: 5%;
+        color: white;
+        text-align: center;
+    }
+    
+    #subheading {
+        margin-top: 5%;
+        font-size: 16px;
+        font-weight: 400;
+    }
+    
+    #parent-subheading {
+        display: none;
+        margin-top: 10%;
+        font-size: 18px;
+        font-weight: 500;
+    }
+    
+    #psycho-subheading {
+        display: none;
+        margin-top: 10%;
+        font-size: 18px;
+        font-weight: 500;
+    }
+    
+    #transition-subheading {
+        display: none;
+        margin-top: 10%;
+        font-size: 18px;
+        font-weight: 500;
+    }
+    
+    #parentNode {
+        margin-top: 20px;
+    }
+    
+    .card-actions {
+        height: auto;
+        cursor: pointer;
+        margin: 0%;
+        padding: 0%;
+    }
+    
+    #yesNo,
+    #ans_radio,
+    #paperInput {
+        width: 100%;
+        @apply(--layout-horizontal);
+        display: none;
+    }
+    
+    #card_psycho {
+        display: none;
+    }
+    
+    .answer-radio {
+        float: none;
+        position: relative;
+        z-index: 2;
+    }
+     .newbd {
+         display: flex; 
+         justify-content: center; 
+         align-items: center; 
+         margin-top: 6px;
+     }
+    
+    .radioActions {
+        margin: 1.5%;
+        width: 92.5%;
+        color: black;
+        background: #009688;
+        padding: 2%;
+        position: relative;
+        height: 30px;
+        align-items: center;
+    }
+    
+    .radioAction {
+        margin: 1.5%;
+        -webkit-transition: background 2s;
+        /* For Safari 3.1 to 6.0 */
+        transition: background 2s;
+        width: 92.5%;
+        color: #333;
+        background: #009688;
+        padding: 2%;
+        position: relative;
+        height: 30px;
+        align-items: center;
+    }
+    
+    .percentage {
+        color: #999;
+        font-weight: bold;
+        position: relative;
+        float: right;
+        z-index: 2;
+    }
+    
+    iron-icon {
+        --iron-icon-fill-color: #253a52;
+    }
+    
+    #schoolIcon {
+        --iron-icon-fill-color: white;
+    }
+    
+    paper-fab {
+        position: fixed;
+        right: 5px;
+        --paper-fab-background: transparent;
+        box-shadow: none;
+    }
+    
+    #checkboxDiv {
+        box-sizing: border-box;
+        display: none;
+    }
+    
+    #checkboxContainer {
+        padding: 0px;
+        padding-bottom: 0px;
+    }
+    
+    paper-checkbox {
+        /*--paper-checkbox-unchecked-color: ;*/
+        --paper-checkbox-unchecked-ink-color: #009688;
+        --paper-checkbox-checked-color: #009688;
+        --paper-checkbox-checked-ink-color: #009688;
+    }
+    
+    #nextCheckButton {
+        float: right;
+        color: white;
+        background-color: #009688;
+        margin-right: 10px;
+        margin-bottom: 5px;
+        /*margin-top: -20px;*/
+    }
+    
+    #nextCheckButton iron-icon {
+        --iron-icon-fill-color: white;
+    }
+    
+    #closeFab {
+        display: none;
+        z-index: 999;
+        background-color: transparent;
+    }
+    
+    #skim {
+        height: 100vh;
+        width: 0;
+        position: fixed;
+        z-index: 99;
+        left: 0;
+        top: 0;
+        background-color: grey;
+        /* fallback color */
+        background-color: rgba(0, 0, 0, 0.7);
+        /* Black w/opacity */
+        overflow-x: hidden;
+    }
+    
+    #progress {
+        padding-top: 2%;
+    }
+    
+    #stats {
+        display: none;
+    }
+    
+    #substats {
+        text-align: center;
+        padding: 3%;
+    }
+    
+    #answerstats {
+        padding-top: 5%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    
+    .mobcross {
+        display: none;
+    }
+    #card_psycho {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    paper-progress.red {
+        --paper-progress-active-color: #5a5d55;
+        --paper-progress-height: 4px;
+    }
+    paper-checkbox.green {
+        --paper-checkbox-unchecked-color: transparent;
+        --paper-checkbox-checked-color: #ccc;
+        --paper-checkbox-size: 118px;
+        --paper-checkbox-label-spacing: 0px;
+        --paper-checkbox-vertical-align: top;
+        --paper-checkbox-margin: 0px;
+        --paper-checkbox-ink-size: 0px;
+        --paper-checkbox-checkmark-color: #222;
+    }
+    .iron-selected {
+        background-color: #FFF;
+    }
+    
+    .actions.psycho-struct {
+        position: relative;
+        display: inline-flex;
+        width: 31%;
+        height: 5%;
+        text-align: center;
+        line-height: 1.3;
+        padding: 1%;
+        padding-top: 4px;
+        padding-bottom: 0px;
+    }
+    .actions.psycho-struct {
+        width: 31%; 
+        margin-bottom: 6px; 
+        margin-left: 2px;
+        text-align: center;
+    }
+    .txlsd {
+        font-size: 14px;
+    }
+    .lsd {
+        right: 0;
+        margin-right: 0px;
+    }
+    .mgt {
+        margin-top: 4px;
+        margin-bottom: 0px;
+    }
+    #newForm {
+        width: 98%;
+        margin-left: 2%;
+        margin-top: 6px;
+    }
+    @media only screen and (max-width: 1200px) {
+        .actions.psycho-struct {
+            width: 32.2%;
+            margin-bottom: 4px; 
+            text-align: center;
+            margin-left: 0px;
+        }
+        #newForm {
+            width: 100%;
+            margin-left: 0px;
+            margin-top: 0px;
+        }
+        paper-checkbox.green {
+            --paper-checkbox-unchecked-color: transparent;
+            --paper-checkbox-checked-color: #ccc;
+            --paper-checkbox-size: 115px;
+            --paper-checkbox-label-spacing: 0px;
+            --paper-checkbox-vertical-align: top;
+            --paper-checkbox-margin: 0px;
+            --paper-checkbox-ink-size: 0px;
+            --paper-checkbox-checkmark-color: #222;
+        }
+    }
+    @media only screen and (max-width: 768px) {
+        .actions.psycho-struct {
+            width: 32.2%; 
+            margin-bottom: 4px; 
+            text-align: center;
+        }
+        paper-checkbox.green {
+            --paper-checkbox-unchecked-color: transparent;
+            --paper-checkbox-checked-color: #ccc;
+            --paper-checkbox-size: 115px;
+            --paper-checkbox-label-spacing: 0px;
+            --paper-checkbox-vertical-align: top;
+            --paper-checkbox-margin: 0px;
+            --paper-checkbox-ink-size: 0px;
+            --paper-checkbox-checkmark-color: #222;
+        }
+    }
+    @media only screen and (max-width: 390px) {
+        .actions.psycho-struct {
+            width: 32.2%;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        paper-checkbox.green {
+            --paper-checkbox-unchecked-color: transparent;
+            --paper-checkbox-checked-color: #ccc;
+            --paper-checkbox-size: 115px;
+            --paper-checkbox-label-spacing: 0px;
+            --paper-checkbox-vertical-align: top;
+            --paper-checkbox-margin: 0px;
+            --paper-checkbox-ink-size: 0px;
+            --paper-checkbox-checkmark-color: #222;
+        }
+        #closeFab {
+            margin-top: 0px;
+            z-index: 999;
+        }
+        .lsd {
+            right: 0;
+            margin-right: 0px;
+        }
+        .txlsd {
+            font-size: 13px;
+        }
+    }
+    @media only screen and (max-width: 1025px) {
+        #closeFab {
+            z-index: 999;
+        }
+    }
+    #closeFab.psycho-struct {
+        display: none;
+        z-index: 999;
+        position: fixed;
+        background-color: transparent;
+        top: 0;
+    }
+    </style>
+    <script>
+    // function myFunc(id) {
+    //     var x = 'ck-'+id;
+    //     if(document.getElementById(x).checked == false) {
+    //         document.getElementById(x).setAttribute('checked');
+    //     }
+    //     else {
+    //         document.getElementById(x).removeAttribute('checked');
+    //     }
+    // }
+    // function myValid() {
+    //     var x = document.getElementsByClassName("iron-selected");
+    //     for(var i=0; i<x.length; i++) {
+    //         x[i].style.backgroundColor = "red";
+    //     }
+    // }
+    </script>
+    <template id="dom-bind">
+        <div id="skim"></div>
+        <paper-fab icon="close" style="" id="closeFab" color="#f44336; position: fixed; top: 0;" on-click="close"></paper-fab>
+        <paper-card id="dialog" class="dialog">
+           
+            <div class="card-content" style="background-color:{{response.header}}" id="questionheader">
+                <iron-icon id="schoolIcon" icon="social:school"></iron-icon>
+                <br>
+                <div id="head">{{response.heading}}</div>
+                <div id="parentNode">{{parentNodes}}</div>
+                <div id="subheading">{{response.question}}</div>
+            </div>
+            <div class="card-actions" id="card_psycho">
+                <form id="inputForm" is="iron-form">
+                    <div id="paperInput" style="width: 70%; margin: 0 auto; margin-top: 14px;  --paper-input-container-focus-color: {{response.header}};">
+                         <paper-input id="paperinput" label='{{response.unit_currency_code}}' prevent-invalid-input allowed-pattern="\d">
+                        <iron-icon suffix icon="send" on-click="fetchNext"></iron-icon>
+                        </paper-input>
+                    </div>
+                </form>
+                <div id="checkboxDiv">
+                    <form is="iron-form" id="checkboxForm">
+                        <div id="checkboxContainer">
+                            <template is="dom-repeat" items="{{response.options}}">
+                                <paper-checkbox>{{item.value}}</paper-checkbox>
+                                <br>
+                            </template>
+                        </div>
+                        <div id="progress">
+                            <center>
+                                <paper-progress class="red" value="{{response.ans_count}}" min=0 max=20></paper-progress>
+                                <p>{{response.ans_count}}/20</p>
+                            </center>
+                        </div>
+                        <paper-button id="nextCheckButton" on-click="fetchNext" style="background-color:{{response.header}} ">Next
+                            <iron-icon icon="arrow-forward"></iron-icon>
+                        </paper-button>
+                    </form>
+                </div>
+                <div id="yesNO" style="margin-bottom: 5px;">
+                    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px; margin-top: 13px; margin-right: 10px;">
+                        <div class="actions" style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 2;" on-click="fetchNext" data-args="0">
+                            <!-- <paper-ripple></paper-ripple> -->
+                            <iron-icon style="margin: 10px;" icon="icons:done-all" id="checkIcon" data-args="0"></iron-icon>
+                            YES
+                        </div>
+                        <div class="actions" style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 2;" on-click="fetchNext" data-args="1">
+                            <!-- <paper-ripple></paper-ripple> -->
+                            <iron-icon style="margin: 10px;" icon="highlight-off" data-args="1"></iron-icon>
+                            NO
+                        </div>
+                        <div class="actions" style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 2;" on-click="fetchNext" data-args="2">
+                            <!-- <paper-ripple></paper-ripple> -->
+                            <iron-icon style="margin: 10px;" icon="help-outline" data-args="2"></iron-icon>
+                            NOT SURE
+                        </div>
+                    </div>
+                    <div id="progress" style="padding-bottom: 2%;">
+                        <center>
+                            <paper-progress class="red" value="{{response.ans_count}}" min=0 max=20 style="padding-bottom: 2%;"></paper-progress>
+                            <p>{{response.ans_count}}/20</p>
+                        </center>
+                    </div>
+                </div>
+                <div id="notSure" style="display: none; margin-bottom: 5px;">
+                    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 15px; margin-top: 3px; margin-right: 10px;">
+                        <div class="actions" style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 2;" on-click="fetchNext" data-args="1">
+                            <!-- <paper-ripple></paper-ripple> -->
+                            <iron-icon style="margin: 10px;" icon="highlight-off" data-args="1"></iron-icon>
+                            VARIES
+                        </div>
+                        <div class="actions" style="display: flex; flex-direction: column; justify-content: center; align-items: center; flex: 2;" on-click="fetchNext" data-args="2">
+                            <!-- <paper-ripple></paper-ripple> -->
+                            <iron-icon style="margin: 10px;" icon="help-outline" data-args="2"></iron-icon>
+                            NOT SURE
+                        </div>
+                    </div>
+                    <div id="progress" style="padding-bottom: 2%;">
+                        <center>
+                            <paper-progress class="red" value="{{response.ans_count}}" min=0 max=20 style="padding-bottom: 2%;"></paper-progress>
+                            <p>{{response.ans_count}}/20</p>
+                        </center>
+                    </div>
+                </div>
+                <div id="branchicons">
+                    <!-- <iron-selector selected='0'>
+                            <iron-icon icon="accessibility" id="1" data-args="0"></iron-icon><br>
+                        Computer Science and Engineering
+                        <div class="actions" data-args="1">
+                        
+                        <iron-icon icon="account-balance" id="2" data-args="1"></iron-icon><br>
+                        Information Technology
+                    </div>  <div class="actions" data-args="2">
+                        
+                        <iron-icon icon="dashboard" id="3" data-args="2"></iron-icon><br>
+                        Electronics Engineering
+                    </div>  <div class="actions" data-args="3">
+                        
+                        <iron-icon icon="account-box" id="4" data-args="3"></iron-icon><br>
+                        Electrical Engineering
+                    </div>  <div class="actions" data-args="4">
+                    
+                        <iron-icon icon="add-alert" id="5" data-args="4"></iron-icon><br>
+                        Mechanical Engineering
+                    </div>  <div class="actions" data-args="5">
+                    
+                        <iron-icon icon="alarm-add" id="6" data-args="5"></iron-icon><br>
+                        Metallurgical Engineering
+                    </div>  <div class="actions" data-args="6">
+                    
+                        <iron-icon icon="add-shopping-cart" id="7" data-args="6"></iron-icon><br>
+                        Civil Engineering
+                    </div>  <div class="actions" data-args="7">
+                    
+                        <iron-icon icon="assessment" id="8" data-args="7"></iron-icon><br>
+                        Aerospace Engineering
+                    </div>  <div class="actions" data-args="8">
+                    
+                        <iron-icon icon="cloud" id="9" data-args="8"></iron-icon><br>
+                        Biotechnology
+                    </div>
+                        </iron-selector> -->
+                <form is="iron-form" id="newForm">
+                    <iron-selector multi attr-for-selected="id" id="newCheck">
+                        <template is="dom-repeat" items="{{response.options}}" id="optns"  data-args="{{item.value}}">
+                            <div class="actions" id="{{item.value}}" style="text-align: center; padding-left: 0px; padding-right: 0px; padding-top: 0px;">
+                                <div class="dv" style="position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                    <iron-icon icon="custom:7" class="mgt" id="{{item.value}}-mg" style="height: 64px; width: 64px; padding-top: 5px; text-align: center;"></iron-icon>
+                                    <!-- <img class="img" src="/assets/images/icons/nicons/{{item.id}}.svg" id="{{item.id}}" data-args="{{item.id}}"> -->
+                                    <div class="txlsd" style="text-align: center; height: 40px; display: flex;align-items: center;justify-content: center;"><span>{{item.value}}</span></div>
+                                </div>
+                                <div style="">
+                                    <paper-checkbox data-args="{{item.value}}" id="ck-{{item.value}}" aria-checked="false" nolink class="green" style="left: 0px; top: 0px; opacity: 0.4;">
+                                    </paper-checkbox>
+                                </div>
+                            </div>
+                        </template>
+                    </iron-selector>
+                    <div style="padding-bottom: 15px; padding-top: 0px;">
+                    <paper-button id="nextCheckButton" on-click="fetchNext" style="background-color:{{response.header}} ">Next
+                        <iron-icon icon="arrow-forward"></iron-icon>
+                    </paper-button>
+                    <div id="progress">
+                        <center>
+                            <paper-progress class="red" value="{{response.ans_count}}" min=0 max=20 style="padding-bottom: 2%;"></paper-progress>
+                            <p>{{response.ans_count}}/20</p>
+                        </center>
+                    </div>
+                    </div>
+                </form>
+                </div>
+                <div id="ans_radio">
+                    <template is="dom-repeat" items="{{response.options}}">
+                        <div class="radioAction" style="display: flex; align-tems: center; background: linear-gradient(to right,  {{item.color}} 0%,{{item.color}} {{item.percentage}}%,#f6f6f6 {{item.percentage}}%,#f6f6f6 100%);">
+                            <div class="answer-radio" on-click="fetchNext" data-args$="{{index}}">
+                                <paper-ripple></paper-ripple>
+                                {{item.value}}</div>
+                            <div class="percentage" style="color:black; position: fixed; right: 0; padding-right: 10px;">{{item.percentage}}%</div>
+                        </div>
+                    </template>
+                    <div id="progress">
+                        <center>
+                            <paper-progress class="red" value="{{response.ans_count}}" min=0 max=20></paper-progress>
+                            <p>{{response.ans_count}}/20</p>
+                        </center>
+                    </div>
+                    <paper-button id="nextCheckButton" on-click="fetchNext" style="background-color:{{response.header}} ">Next
+                        <iron-icon icon="arrow-forward"></iron-icon>
+                    </paper-button>
+                </div>
+                <div id="radio">
+                    <template is="dom-repeat" items="{{response.options}}">
+                        <div class="radioActions" on-click="fetchNext" data-args$="{{index}}" style="background-color: #c7c7c7; color: black; display: flex;">
+                            <paper-ripple></paper-ripple>
+                            {{item.value}}</div>
+                    </template>
+                    <div id="progress">
+                        <center>
+                            <paper-progress class="red" value="{{response.ans_count}}" min=0 max=20>
+                            </paper-progress>
+                            <p> {{response.ans_count}}/20 </p>
+                        </center>
+                    </div>
+                    <paper-button id="nextCheckButton" style="background-color:{{response.header}} ">Next
+                        <iron-icon icon="arrow-forward"></iron-icon>
+                    </paper-button>
+                </div>
+                <div id="stats">
+                    <div id="answerstats">
+                        <div id="substats" style="font-size:150%">
+                            <font color="white">Thank you for answering</font>
+                        </div>
+                        <div id="substats" style="font-size:120%">
+                            <font color="white">Check out your lifetime stats</font>
+                        </div>
+                        <div id="substats" style="font-size:200%">
+                            <font color="white">{{response.total_answer}}</font>
+                        </div>
+                        <div id="substats" style="font-size:100%">
+                            <font color="white">Total Questions Answered</font>
+                        </div>
+                        <div id="substats">
+                            <center>
+                                <paper-button id="Answer_More" on-click="fetchNext" style="background-color:#EEEEEE; font:#4285F4; ">
+                                    <font color="#4285F4">MORE QUESTIONS</font>
+                                </paper-button>
+                            </center>
+                        </div>
+                        <div id="substats">
+                            <center>
+                                <paper-button style=" background-color:#4285F4; " id="skip" on-click="fetchNext">
+                                    <font color="white">SKIP </font>
+                                </paper-button>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </paper-card>
+        <paper-card class="parent-dialog" id="parent-dialog">
+            <div class="card-content" style="background-color:{{response.header}}">
+                <iron-icon id="schoolIcon" icon="social:school"></iron-icon>
+                <br>
+                <div id="head">{{response.heading}}</div>
+                <div id="transition-subheading">{{transition}}</div>
+                <div id="parent-subheading">{{parentNodes}} Questions </div>
+                <div id="psycho-subheading">{{response.node_name}} Questions</div>
+            </div>
+        </paper-card>
+        <!-- Iron ajax will do all the ajax work 
+            url will be provided in the element's url attribute.
+            params are the parameters we want to pass through ajax.
+        -->
+        <iron-ajax id="myIronAjax" url="{{url}}" params="{{ajaxParams}}" handle-as="json" on-response="handleResponse" last-response="{{response}}"></iron-ajax>
+    </template>
+    <script>
+    Polymer({
+        is: "psycho-struct",
+        properties: {
+            heading: {
+                type: String
+            },
+            url: {
+                type: String
+            },
+            exit: {
+                type: String
+            },
+            parentNodes: {
+                type: String
+            },
+            cardOpened: {
+                type: Boolean,
+                value: false
+            },
+            ajaxParams: {
+                type: Object,
+                value: function() {
+                    return {
+                        "firstQuestion": "true"
+                    }
+                }, //Only for the first time it is true
+                notify: true
+            }
+        },
+        attached: function() {
+            //when this element gets attached to the document, make first ajax request.
+            console.log("attached");
+            this.ajaxRequest();
+        },
+        fetchNext: function(e) {
+            if (e.target.getAttribute('id') == "Answer_More" || e.target.parentNode.getAttribute('id') == "Answer_More" || e.target.getAttribute('id') == "skip" || e.target.parentNode.getAttribute('id') == "skip") {
+                setTimeout(function() {
+                    card = document.getElementById('dialog');
+                    parent_card = document.getElementById('parent-dialog');
+                    card.style.left = "-20%";
+                    card.style.opacity = "0";
+                    parent_card.style.left = "-20%";
+                    parent_card.style.opacity = "0";
+                    setTimeout(function() {
+                        console.log("TimeOut");
+                        card.style.transitionProperty = "none";
+                        parent_card.transitionProperty = "none";
+                        card.style.left = "120%";
+                        parent_card.style.left = "120%";
+                    }, 450);
+                    this.cardOpened = false;
+                    this.parent_cardOpened = false;
+                }, 650);
+                setTimeout(function() {
+                    document.getElementById("myIronAjax").generateRequest();
+                    console.log('enter');
+                }, 1150);
+                if (e.target.getAttribute('id') == "Answer_More" || e.target.parentNode.getAttribute('id') == "Answer_More") {
+                    this.ajaxParams = {
+                        "ans": document.querySelector('paper-input').value,
+                        "type": "-5",
+                        "firstQuestion": "false"
+                    };
+                } else {
+                    this.ajaxParams = {
+                        "ans": document.querySelector('paper-input').value,
+                        "type": "-2",
+                        "firstQuestion": "false"
+                    };
+                    //document.getElementById('closeFab').click();
+                }
+            } else {
+                var ajax = document.getElementById("myIronAjax");
+                if (ajax.lastResponse.ques_count <= 6) {
+                    var class_val = e.target.getAttribute('class');
+                    console.log(class_val.indexOf("radioActions"));
+                    if (class_val.indexOf("radioActions") == 0) {
+                        var radio = document.getElementById('radio');
+                        var value = e.target.getAttribute('data-args');
+                        this.set('response.options.' + value + '.color', '#A0E4BC');
+                        var answer = ajax.lastResponse.options.length;
+                        var i = 0;
+                        var total = 0;
+                        var opt_value = [];
+                        for (i = 0; i < answer; i++) {
+                            total = total + parseInt(ajax.lastResponse.options[i]['percentage']);
+                            if (value == i) {
+                                total = total + 1;
+                                opt_value[i] = parseInt(ajax.lastResponse.options[i]['percentage']) + 1;
+                            } else {
+                                opt_value[i] = parseInt(ajax.lastResponse.options[i]['percentage']);
+                            }
+                        }
+                        for (i = 0; i < answer; i++) {
+                            console.log(opt_value[i]);
+                            percentage = (opt_value[i] * 100) / total;
+                            console.log(percentage);
+                            percentage = percentage.toFixed(0);
+                            this.set('response.options.' + i + '.percentage', percentage);
+                        }
+                        console.log(answer);
+                        var ans_radio = document.getElementById('ans_radio');
+                        radio.style.display = 'none';
+                        ans_radio.style.display = 'block';
+                        setTimeout(function() {
+                            card = document.getElementById('dialog');
+                            parent_card = document.getElementById('parent-dialog');
+                            card.style.left = "-20%";
+                            card.style.opacity = "0";
+                            parent_card.style.left = "-20%";
+                            parent_card.style.opacity = "0";
+                            setTimeout(function() {
+                                console.log("TimeOut");
+                                card.style.transitionProperty = "none";
+                                parent_card.transitionProperty = "none";
+                                card.style.left = "120%";
+                                parent_card.style.left = "120%";
+                            }, 450);
+                            this.cardOpened = false;
+                            this.parent_cardOpened = false;
+                        }, 650);
+                        setTimeout(function() {
+                            document.getElementById("myIronAjax").generateRequest();
+                            console.log('enter');
+                            var input = document.getElementById("inputForm");
+                            input.reset();
+                        }, 1150);
+                        this.ajaxParams = {
+                            "ans": document.querySelector('paper-input').value,
+                            "type": e.target.getAttribute('data-args'),
+                            "firstQuestion": "false"
+                        };
+                    }
+                    if (e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton") {
+                        setTimeout(function() {
+                            card = document.getElementById('dialog');
+                            parent_card = document.getElementById('parent-dialog');
+                            card.style.left = "-20%";
+                            card.style.opacity = "0";
+                            parent_card.style.left = "-20%";
+                            parent_card.style.opacity = "0";
+                            setTimeout(function() {
+                                console.log("TimeOut");
+                                card.style.transitionProperty = "none";
+                                parent_card.transitionProperty = "none";
+                                card.style.left = "120%";
+                                parent_card.style.left = "120%";
+                            }, 450);
+                            this.cardOpened = false;
+                            this.parent_cardOpened = false;
+                        }, 650);
+                        setTimeout(function() {
+                            document.getElementById("myIronAjax").generateRequest();
+                            console.log('enter');
+                        }, 1150);
+                        this.ajaxParams = {
+                            "ans": document.querySelector('paper-input').value,
+                            "type": e.target.getAttribute('data-args'),
+                            "firstQuestion": "false"
+                        };
+                    }
+                } else if (ajax.lastResponse.ques_count > 6) {
+                    this.close(e);
+                    console.log("fetchNext");
+                    if (e.target.getAttribute('id') == "nextCheckButton" || e.target.parentNode.getAttribute('id') == "nextCheckButton") {
+                        var checkboxes = document.getElementById("checkboxContainer").querySelectorAll("paper-checkbox");
+                        var dispCheckbox = document.getElementById("newCheck").querySelectorAll("paper-checkbox");
+                        var checks = [];
+                        for (i = 0; i < checkboxes.length; i++) {
+                            checks[i] = checkboxes[i].checked ? 1 : 0;
+                            if (checkboxes[i].role == 'checkbox') {
+                                checkboxes[i].checked = false;
+                            }
+                        }
+                        var dispCheck = [];
+                        for (i = 0; i < dispCheckbox.length; i++) {
+                            dispCheck[i] = dispCheckbox[i].checked ? 1 : 0;
+                            if (dispCheckbox[i].role == 'checkbox') {
+                                dispCheckbox[i].checked = false;
+                            }
+                        }
+                        this.ajaxParams = {
+                            "checkboxes": '"' + dispCheck + '"',
+                            "firstQuestion": "false"
+                        };
+                        console.log("New Check Box Data starts");
+                        console.log(this.ajaxParams);
+                        console.log("New Check Box Data");
+                        var form = document.getElementById("checkboxForm");
+                        form.reset();
+                        var newform = document.getElementById("newForm");
+                        newform.reset();
+                    } else {
+                        console.log(document.querySelector('#paperinput').value);
+                        this.ajaxParams = {
+                            "ans": document.querySelector('#paperinput').value,
+                            "type": e.target.getAttribute('data-args'),
+                            "firstQuestion": "false"
+                        };
+                        console.log(this.ajaxParams);
+                    }
+                    //console.log(this.ajaxParams.checkboxes);
+                    setTimeout(function() {
+                        document.getElementById("myIronAjax").generateRequest();
+                        var input = document.getElementById("inputForm");
+                        input.reset();
+                    }, 350);
+                }
+            }
+        },
+        ajaxRequest: function() {
+            document.getElementById("myIronAjax").generateRequest();
+        },
+        handleResponse: function() {
+            var stats = document.getElementById('stats');
+            var card_psycho = document.getElementById('card_psycho');
+            var ajax = document.getElementById("myIronAjax");
+            var main = document.getElementById('dialog');
+            var radio = document.getElementById('radio');
+            var notSure = document.getElementById('notSure');
+            var yesNO = document.getElementById('yesNO');
+            var ans_radio = document.getElementById('ans_radio');
+            var checkboxDiv = document.getElementById('checkboxDiv');
+            var paperInput = document.getElementById('paperInput');
+            var lowerdiv = document.getElementById('parent-dialog');
+            var progress = document.getElementById('progress');
+            var branchicons = document.getElementById('branchicons');
+            var y = document.getElementsByClassName('actions');
+           
+            
+            
+            var checkboxes = document.getElementById("checkboxContainer").querySelectorAll("paper-checkbox");
+            var dispCheckbox = document.getElementById("newCheck").querySelectorAll("paper-checkbox");
+            var checks = [];
+            notSure.style.display = 'none';
+            for (i = 0; i < checkboxes.length; i++) {
+                checks[i] = checkboxes[i].checked ? 1 : 0;
+                if (checkboxes[i].role == 'checkbox') {
+                    checkboxes[i].checked = false;
+                }
+            }
+            var dispCheck = [];
+            for (i = 0; i < dispCheckbox.length; i++) {
+                dispCheck[i] = dispCheckbox[i].checked ? 1 : 0;
+                if (dispCheckbox[i].role == 'checkbox') {
+                    dispCheckbox[i].checked = false;
+                }
+            }
+            main.style.background = "white";
+            stats.style.display = 'none';
+            branchicons.style.display = 'none'
+            progress.style.display = 'block';
+            if (ajax.lastResponse.ques_ans == -2) {
+                document.getElementById('closeFab').click();
+            }
+            if (ajax.lastResponse.ques_count == -1) {
+                var progress = document.getElementById('progress');
+                var school = document.getElementById('schoolIcon');
+                var ans_more = document.getElementById('Answer_More');
+                var skip = document.getElementById('skip');
+                progress.style.display = 'none';
+                school.style.display = 'none';
+                ans_more.style.display = 'none';
+                skip.style.display = 'none';
+                this.set('response.heading', 'All question completed');
+                var header = document.getElementById('questionheader');
+                ans_radio.style.display = 'none';
+                header.style.background = "#969696";
+                main.style.background = "#969696";
+                yesNO.style.display = 'none';
+                radio.style.display = 'none';
+                notSure.style.display = 'none';
+                paperInput.style.display = 'none';
+                checkboxDiv.style.display = 'none';
+                branchicons.style.display = 'none';
+                lowerdiv.style.display = 'none';
+                progress.style.display = 'none';
+                header.style.display = 'none';
+                stats.style.display = 'block';
+                card_psycho.style.display = 'block';
+                if (ajax.lastResponse != null && this.ajaxParams.firstQuestion == "false") {
+                    console.log("Opening from handleResponse");
+                    this.open();
+                }
+            } else if (ajax.lastResponse.ques_ans == -1) {
+                var header = document.getElementById('questionheader');
+                ans_radio.style.display = 'none';
+                header.style.background = "#969696";
+                main.style.background = "#969696";
+                yesNO.style.display = 'none';
+                radio.style.display = 'none';
+                notSure.style.display = 'none';
+                paperInput.style.display = 'none';
+                checkboxDiv.style.display = 'none';
+                branchicons.style.display = 'none';
+                lowerdiv.style.display = 'none';
+                progress.style.display = 'none';
+                header.style.display = 'none';
+                stats.style.display = 'block';
+                card_psycho.style.display = 'block';
+                if (ajax.lastResponse != null && this.ajaxParams.firstQuestion == "false") {
+                    console.log("Opening from handleResponse");
+                    this.open();
+                }
+                console.log('stats card displayed');
+            } else if (ajax.lastResponse.ques_count > 6) {
+                card_psycho.style.display = 'block';
+                ans_radio.style.display = 'none';
+                var parentSubhead = document.getElementById('parent-subheading');
+                var transSubhead = document.getElementById('transition-subheading');
+                var psychoSubhead = document.getElementById('psycho-subheading');
+                psychoSubhead.style.display = "none";
+                yesNO.style.display = 'none';
+                
+                var parentArray = ajax.lastResponse.parent;
+                if(parentArray != null)
+                {
+                    var parentNodes = parentArray[Object.keys(parentArray).length - 2];
+                    for (var i = Object.keys(parentArray).length - 4; i >= 0; i -= 2) {
+                        parentNodes += " -> " + parentArray[i];
+                    }
+                    this.parentNodes = parentNodes;
+                    this.transition = "";
+                      
+                }
+                var time = 0;
+                var flag = 0; //To remove the first option in insert and checkbox type
+                
+                if (ajax.lastResponse.options[0]['value'] == "insert") {
+                    ajax.lastResponse.options.splice(0, 1);
+                    flag = 1;
+                } else if (ajax.lastResponse.options[0]['value'] == "checkbox") {
+                    ajax.lastResponse.options.splice(0, 1);
+                    flag = 2;
+                }
+
+                if (ajax.lastResponse.ques_flag == 1 || ajax.lastResponse.ques_count == 7) {
+                    main.style.display = 'none';
+                    yesNO.style.display = 'none';
+                    radio.style.display = 'none';
+                    notSure.style.display = 'none';
+                    paperInput.style.display = 'none';
+                    checkboxDiv.style.display = 'none';
+                    branchicons.style.display = 'none';
+                    if (ajax.lastResponse.ques_count == 7) {
+                        option_flag = 1;
+                        parentSubhead.style.display = 'none';
+                        lowerdiv.style.display = 'block';
+                        transSubhead.style.display = 'block';
+                        console.log('psycho => struct transition');
+                        this.transition = "Tell us More about you College";
+                    } else {
+                        transSubhead.style.display = 'none';
+                        lowerdiv.style.display = 'block';
+                        console.log(lowerdiv.style.display);
+                        parentSubhead.style.display = 'block';
+                        console.log('parent => parent transition');
+                    }
+                    time = 2000;
+                }
+                setTimeout(function() {
+                    lowerdiv.style.display = 'none';
+                    parentSubhead.style.display = 'none';
+                    main.style.display = 'block';
+                    if (ajax.lastResponse.opt_num == "0") {
+                        yesNO.style.display = 'none';
+                        radio.style.display = 'none';
+                        notSure.style.display = 'none';
+                        paperInput.style.display = 'block';
+                        checkboxDiv.style.display = 'none';
+                        branchicons.style.display = 'none';
+                    } else if (flag == 1) {
+                        array = document.getElementsByClassName("radioActions")
+                        for (var k = 0; k < array.length; k++) {
+                            array[k].style.width = "92.5%";
+                            array[k].style.margin = "1.5%";
+                            array[k].style.textAlign = "center";
+                        }
+                        radio.style.display = 'none';
+                       notSure.style.display = 'block';
+                        paperInput.style.display = 'block';
+                        console.log("paperInput.style.display");
+                        console.log(paperInput.style.display);
+                        checkboxDiv.style.display = 'none';
+                        branchicons.style.display = 'none';
+                    } 
+                    /*else if (flag == 2 && ajax.lastResponse.branchicons == null) {
+                        yesNO.style.display = 'none';
+                        radio.style.display = 'none';
+                        paperInput.style.display = 'none';
+                        checkboxDiv.style.display = 'block';
+                        branchicons.style.display = 'none';
+                    }*/ 
+                    else if (flag == 2) {
+                        console.log("CheckBox Entered");
+                        yesNO.style.display = 'none';
+                        radio.style.display = 'none';
+                        notSure.style.display = 'none';
+                        paperInput.style.display = 'none';
+                        checkboxDiv.style.display = 'none';
+                        branchicons.style.display = 'block';
+                        for(var i=0;i<y.length;i++) {
+                            y[i].classList.remove('iron-selected');
+                        }
+                    } else if (ajax.lastResponse.opt_num == "3" && ajax.lastResponse.options[0]['value'] == "Yes") {
+                        console.log('YNNS');
+                        yesNO.style.display = 'block';
+                        radio.style.display = 'none';
+                        notSure.style.display = 'none';
+                        paperInput.style.display = 'none';
+                        checkboxDiv.style.display = 'none';
+                        branchicons.style.display = 'none';
+                    } else {
+                        console.log("Radio Type Entered");
+                        yesNO.style.display = 'none';
+                        radio.style.display = 'block';
+                        notSure.style.display = 'none';
+                        paperInput.style.display = 'none';
+                        checkboxDiv.style.display = 'none';
+                        branchicons.style.display = 'none';
+                    }
+                }, time);
+                console.log("handleResponse " + this.ajaxParams.firstQuestion);
+                if (ajax.lastResponse != null && this.ajaxParams.firstQuestion == "false" && ajax.lastResponse.ques_ans != -2) {
+                    console.log("Opening from handleResponse");
+                    this.open();
+                }
+                if (ajax.lastResponse.ques_ans == -2) {
+                    document.getElementById('closeFab').click();
+                }
+            } else {
+                array = document.getElementsByClassName("radioActions")
+                for (var k = 0; k < array.length; k++) {
+                    array[k].style.width = "92.5%";
+                    array[k].style.margin = "1.5%";
+                    array[k].style.textAlign = "left";
+                }
+                var pyschoSubhead = document.getElementById('psycho-subheading');
+                var transSubhead = document.getElementById('transition-subheading');
+                transSubhead.style.display = 'none';
+                card_psycho.style.display = 'block';
+                this.parentNodes = "";
+                var time = 30;
+                console.log(ajax.lastResponse.options);
+                if (ajax.lastResponse.ques_flag == 1) {
+                    ans_radio.style.display = 'none';
+                    radio.style.display = 'none';
+                    notSure.style.display = 'none';
+                    checkboxDiv.style.display = 'none';
+                    branchicons.style.display = 'none';
+                    paperInput.style.display = 'none';
+                    yesNO.style.display = 'none';
+                    main.style.display = 'none';
+                    lowerdiv.style.display = 'block';
+                    pyschoSubhead.style.display = 'block';
+                    time = 1500;
+                }
+                setTimeout(function() {
+                    lowerdiv.style.display = 'none';
+                    ans_radio.style.display = 'none';
+                    yesNO.style.display = 'none';
+                    checkboxDiv.style.display = 'none';
+                    branchicons.style.display = 'none';
+                    paperInput.style.display = 'none';
+                    main.style.display = 'block';
+                    radio.style.display = 'block';
+                    notSure.style.display = 'none';
+                }, time);
+                console.log("handleResponse " + this.ajaxParams.firstQuestion);
+                if (ajax.lastResponse != null && this.ajaxParams.firstQuestion == "false" && ajax.lastResponse.ques_ans != -2) {
+                    console.log("Opening from handleResponse");
+                    this.open();
+                }
+                if (ajax.lastResponse.ques_ans == -2) {
+                    document.getElementById('closeFab').click();
+                }
+            }
+        },
+        toggle: function() {
+            console.log("toggle " + this.cardOpened);
+            var ajax = document.getElementById("myIronAjax");
+            if (this.cardOpened === true) {
+                this.close(e);
+            } else {
+                document.getElementById("skim").style.width = "100vw";
+                this.open();
+                console.log(ajax.lastResponse.options);
+                if (ajax.lastResponse.ques_count == -1) {
+                    setTimeout(function() {
+                        console.log("TimeOut1");
+                        document.getElementById('closeFab').click();
+                    }, 2000);
+                }
+            }
+        },
+        open: function() {
+            console.log("open");
+            card = document.getElementById('dialog');
+            card2 = document.getElementById('parent-dialog');
+            card.style.transitionProperty = "left,opacity";
+            card.style.left = "50%";
+            card.style.opacity = "1";
+            card2.style.transitionProperty = "left,opacity";
+            card2.style.left = "50%";
+            card2.style.opacity = "1";
+            document.getElementById('closeFab').style.display = "block";
+            this.cardOpened = true;
+            this.card2Opened = true;
+        },
+        close: function(e) {
+            console.log("close");
+            var close = document.getElementById('closeFab');
+            if (e.target.getAttribute("id") == "closeFab") {
+                var link = window.location.href;
+                console.log(link);
+                
+                var sublink = 'psychographic/answers';
+                var sublink_profile = 'user/profile';
+                console.log(link.indexOf(sublink));
+                console.log(window.location.href);
+                console.log(link.indexOf(sublink));
+                console.log(window.location.href);
+                e.target.style.display = "none";
+                document.getElementById("skim").style.width = "0px";
+                if (link.indexOf(sublink) != -1 || link.indexOf(sublink_profile)!= -1 ) {
+                    location.reload();
+                }
+            } else if (e.target.parentNode.getAttribute("id") == "closeFab") {
+                var link = window.location.href;
+                console.log(link);
+                console.log("ha");
+                var sublink = 'psychographic/answers';
+                var sublink_profile = 'user/profile';
+                console.log(link.indexOf(sublink));
+                console.log(window.location.href);
+                e.target.parentNode.style.display = "none";
+                document.getElementById("skim").style.width = "0px";
+                if (link.indexOf(sublink) != -1 || link.indexOf(sublink_profile)!= -1 ) {
+                    location.reload();
+                }
+            }
+            card = document.getElementById('dialog');
+            parent_card = document.getElementById('parent-dialog');
+            card.style.left = "-20%";
+            card.style.opacity = "0";
+            parent_card.style.left = "-20%";
+            parent_card.style.opacity = "0";
+            setTimeout(function() {
+                console.log("TimeOut");
+                card.style.transitionProperty = "none";
+                card.style.left = "120%";
+                parent_card.style.left = "120%";
+            }, 350);
+            this.cardOpened = false;
+            console.log(this.cardOpened);
+        }
+    });
+    </script>
+</dom-module>

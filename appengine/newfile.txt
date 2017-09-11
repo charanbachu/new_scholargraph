@@ -1,0 +1,256 @@
+Engineering
+Undergraduate
+Computer science
+Mechanical engineering
+Electronics& communication
+Civil engineering
+Chemical engineering
+Electrical& electronics
+Information technology
+Electrical
+Electronics
+Biotechnology
+Aerospace engineering
+Industrial engineering
+Biomedical engineering
+Agricultural engineering
+Mechatronics
+Food science
+Mining
+Material science
+Petrochemical engineering
+Textile engineering
+Masters
+Computer science
+Electronics & communication
+Electronics
+Civil engineering
+Mechanical engineering
+Electrical
+Design engineering
+Electrical & electronics
+Information technology
+Industrial engineering
+Software engineering
+Manufacturing engineering
+Environmental engineering
+Biotechnology
+Chemical engineering
+Energy engineering
+Control engineering
+Network engineering
+Nano technology
+Instrumentation
+Doctoral
+Architecture
+Undergraduate
+Interior design
+Architecture planning
+Masters
+Urban planning
+Landscape architecture
+Construction planning
+Environmental architecture
+Urban design
+Architectural conservation
+Doctoral
+Science
+Undergraduate
+Chemical science
+Mathematics
+Physics
+Computer science
+Zoology
+Masters
+Mathematics
+Chemical science
+Physics
+Computer science
+Biotechnology
+Zoology
+Life sciences
+Microbiology
+Information technology
+Biochemistry
+Geographical sciences 
+Environmental science
+Food science
+Statistics
+Electronics
+Psychology
+Doctoral
+Computer application
+Undergraduate
+Information technology
+Data science
+Animation
+Visual basic application
+Masters
+Digital education
+Information technology
+Networking technologies
+Software engineering
+Data science
+Doctoral
+Medical
+Undergraduate
+Masters
+Surgery
+Orthopaedics
+E.n.t
+Ophthalmology
+Obstetrics
+Human anatomy
+General surgery
+Ayurved
+Anaesthisia
+Radiography
+Pediatrics
+Physical medicine
+Urology
+Physiology
+Medical technology 
+Doctoral
+Dental
+Undergraduate
+Masters
+Periodontics
+Orthodontics
+Prosthodontics
+Oral pathology
+Oral surgery
+Endodontics
+Doctoral
+Pharmacy
+Undergraduate
+Pharmacology
+Ayurved
+Masters
+Pharmaceutics
+Pharmaceutical chemistry
+Pharmaceutical analytics
+Industrial pharmacy
+Pharmacognosy
+Practice pharmacy
+Doctoral
+Paramedical
+Undergraduate
+Optometry
+Cardiac technology
+Health care personnel
+Radiotherapy
+Emergency medicine
+Anaesthisia
+Masters
+Nursing
+Pediatrics
+Doctoral
+Veterinary
+Undergraduate
+Animal health
+Masters
+Livestock management
+Animal pathology
+Animal nutrition
+Animal genetics
+Animal pharmacology
+Animal surgery
+Doctoral
+Management/ business
+Undergraduate
+Hotel management
+Tourism management
+Banking
+Business administration
+Design management
+Corporate law
+Masters
+Human resources management
+Finance
+Marketing
+Hospitality management
+Operations management
+Information technology
+Doctoral
+Commerce/ economics
+Undergraduate
+Computer application studies
+Accounting
+Finance
+Office management
+Banking
+Masters
+Business management
+International business
+Entrepreneurship
+Doctoral
+Liberalarts
+Undergraduate
+English
+History
+Economics
+Political science
+Hindi
+Masters
+Bengali
+Social work
+Marathi
+Religious studies
+Telugu
+Anthropology
+Doctoral
+Agriculture
+Undergraduate
+Agricultre biotechnology
+Fisheries science
+Agri management
+Plant physiology
+Agricultural statistics
+Masters
+Horticulture
+Forestry
+Plant pathology
+Agronomy
+Agricultural technology
+Agricultural genetics
+Doctoral
+Design
+Undergraduate
+Fashion design
+Interior design
+Textile design
+Industrial design
+Jewelry design
+Masters
+Computer application studies
+Game design
+Universal design
+Information design
+Retail design
+Industrial management
+Doctoral
+Communication
+Undergraduate
+Multimedia communication
+Animation
+Videography
+Graphic designing
+Games and sports
+Masters
+Journalism
+Media studies
+Advertising
+Film making
+Cinematography
+Communication studies
+Doctoral
+Law
+Undergraduate
+Masters
+Civil law
+Criminal law
+Corporate law
+Intellectual property law
+International law
+Labor law
+Doctoral

@@ -1,0 +1,22 @@
+<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+<dom-module id="my-app">
+    <template>
+        <paper-checkbox name="remoteLocation" id="remote-chk" on-click="showMe">Remote Location</paper-checkbox>
+        <div id="autoUpdate" class="autoUpdate" hidden$="{{hide}}">content</div>
+    </template>
+    <script>
+        Polymer({
+            is: "my-app",
+            properties: {
+                hide: {
+                    type: Boolean,
+                    value: true // init the value to true so it will be hidden on page load
+                }
+            },
+            showMe: function() {
+                this.hide = !this.hide
+
+            }
+        });
+    </script>
+</dom-module>
